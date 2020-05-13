@@ -11,6 +11,7 @@ Observações.: 2020-05-10 - [R00] Criação do Arquivo - Versao 1.00
 
 from source.lib import library
 
+
 def main():
     library.Menu_Inicial()
 
