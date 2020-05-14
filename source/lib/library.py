@@ -16,18 +16,26 @@ Observações.: 2020-05-10 - [R00] Criação do Arquivo - Versao 1.00
               ...
 """
 
-import os
 import datetime
 from source.mov import pedido
 from source import user
 from source import pizza
 from source.report import report
+from source.db.database import tables
+from source.db import db_pizza
+
 
 # Retorna somente a data e hora atual,
 def Datetime_fmt(formatstring):
     # no formato YYYY-MM-DD HH: MM:SS
     if formatstring == 'YYYY-MM-DD HH:MM:SS.MS':
         return format(datetime.datetime.now())
+    if formatstring == 'YYYY-MM-DD':
+        return format(datetime.date.today())
+    if formatstring == 'HH:MM:SS':
+        minutesLater = datetime.datetime.today() + datetime.timedelta(minutes = 50)
+        minutesLater = minutesLater.strftime("%H:%M:%S")
+        return format(minutesLater)
 
 def Limpar_Tela():
     print('\n' * 40)
@@ -76,9 +84,10 @@ def Menu_Movimentacao():
             print('\n************** MENU MOVIMENTAÇÕES **************')
             print('   [1] - Usuarios')
             print('   [2] - Pizzas')
+            print('   [9] - Reset de banco')
             print('   [0] - Voltar ao Menu Principal')
             opcao = int(input('Digite a opção desejada: '))
-            if not 0 <= opcao <= 2:
+            if not 0 <= opcao <= 2 and opcao != 9:
                 raise ValueError("\n           ***** Valor Inválido *****")
         except ValueError as e:
             print("\n           ***** Valor Inválido *****")
@@ -87,43 +96,60 @@ def Menu_Movimentacao():
                 user.Menu_Cadastro()
             elif opcao == 2:
                 pizza.Menu_Cadastro()
-
-"""
-def Abrir_Banco():
-    fileDB = 'C:\\Users\vinip\Documents\Facul\3SEM\Saito\Pyton\Projeto_Pizzaria\source\db\db_pizzaria.sqlite'
-
-    # verificando se arquivo de banco de dados existe
-    print(f'Verificando se arquivo {fileDB} existe.')
-    if not os.path.exists(fileDB):
-        print(f'O arquivo: {fileDB} não existe!')
-        exit(-1)
-    else:
-        pass
-
-    # Criando a base de dados
-    connection = sqlite3.connect(fileDB)
-
-    # Retorna a abertura
-    return connection.cursor(connection)
-
-def data_entry(connection):
-    cursor = Abrir_Banco()
-    lista_cli = [(1, 'JOSE DA SILVA', 'JUNDIAI', 1500.55),
-                 (2, 'ANA MARIA', 'JUNDIAI', 2300.69),
-                 (3, 'MARIA DE SOUZA', 'CAMPINAS', 3547.02)]
-
-    cursor.executemany("INSERT INTO cliente(id, nome, cidade, salario) \
-                    values (?, ?, ?, ?)", lista_cli)
-
-    tupla_cli = (4, 'ANTONIO LIMA', 'VARZEA PAULISTA', 1346.22)
-    cursor.execute("INSERT INTO cliente(id, nome, cidade, salario) \
-                    values (?, ?, ?, ?)", tupla_cli)
-
-    connection.commit()
-    print('Dados inseridos com sucesso!')
-"""
+            elif opcao == 9:
+                ref = "BOB"
+                while ref != 'BOB-PIZZARIA':
+                    print('\n    Você está preste a apagar todos os dados do banco de dados!')
+                    print('    Para confirmar digite BOB-PIZZARIA\n'
+                          '    Para voltar digite SAIR')
+                    ref = input('    Frase: ')
+                    if ref == 'BOB-PIZZARIA':
+                        tables.create_table()
+                        db_pizza.create_db_pizza()
+                    elif ref == 'SAIR':
+                        ref= 'BOB-PIZZARIA'
 
 
+def Calcular_Valor(Tamanho, Valor, Qtde):
+    if Tamanho == 'Medio':
+        Valor_Parcial = (Valor * 1.15) * Qtde
+        Valor_Unit = Valor * 1.15
+
+        Valor_Parcial = float("{:.2f}".format(Valor_Parcial))
+        Valor_Unit = float("{:.2f}".format(Valor_Unit))
+
+        Valor_Unit = str(Valor_Unit)
+        Valor_Parcial = str(Valor_Parcial)
+        Valor_Unit = str(Valor_Unit.replace('.', ','))
+        Valor_Parcial = str(Valor_Parcial.replace('.', ','))
+
+        return Valor_Parcial, Valor_Unit
+    elif Tamanho == 'Grande':
+        Valor_Parcial = (Valor * 1.25) * Qtde
+        Valor_Unit = Valor * 1.25
+
+        Valor_Parcial = float("{:.2f}".format(Valor_Parcial))
+        Valor_Unit = float("{:.2f}".format(Valor_Unit))
+
+        Valor_Unit = str(Valor_Unit)
+        Valor_Parcial = str(Valor_Parcial)
+        Valor_Unit = str(Valor_Unit.replace('.', ','))
+        Valor_Parcial = str(Valor_Parcial.replace('.', ','))
+
+        return Valor_Parcial, Valor_Unit
+    elif Tamanho == 'Gigante':
+        Valor_Parcial = (Valor * 1.35) * Qtde
+        Valor_Unit = Valor * 1.35
+
+        Valor_Parcial = float("{:.2f}".format(Valor_Parcial))
+        Valor_Unit = float("{:.2f}".format(Valor_Unit))
+
+        Valor_Unit = str(Valor_Unit)
+        Valor_Parcial = str(Valor_Parcial)
+        Valor_Unit = str(Valor_Unit.replace('.', ','))
+        Valor_Parcial = str(Valor_Parcial.replace('.', ','))
+
+        return Valor_Parcial, Valor_Unit
 
     
 

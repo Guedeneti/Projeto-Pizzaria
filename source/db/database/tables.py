@@ -13,40 +13,19 @@ Observações.: 2020-05-12 - [R00] Criação do Arquivo - Versao 1.00
 import os
 import sqlite3
 
-"""
-#definindo um arquivo para clientes
-fileDB = 'C:\\Users\\vinip\\Documents\\Facul\\3SEM\\Saito\\Pyton\\ProjetoPizzaria\\source\\db\\database\\db_pizzaria.sqlite'
-
-#excluindo o arquivo de banco de dados
-print('Excluindo o arquivo de banco de dados, caso exista.')
-if os.path.exists(fileDB):
-    os.remove(fileDB)
-else:
-    print(f'O arquivo: {fileDB} não existe!')
-
-# Criando a base de dados
-print(f'Criando um novo arquivo {fileDB}')
-connection = sqlite3.connect(fileDB)
-
-# Get a cursor object
-cursor = connection.cursor()
-"""
 
 def chamada_db(new):
     # definindo um arquivo
-    fileDB = 'C:\\Users\\vinip\\Documents\\Facul\\3SEM\\Saito\\Pyton\\ProjetoPizzaria\\source\\db\\database\\db_pizzaria.sqlite'
+    fileDB = 'C:\\Users\\mateu\\Documents\\Pycharm\\source\\db\\database\\db_pizzaria.sqlite'
 
     # verificando se arquivo de banco de dados existe
     if not os.path.exists(fileDB):
         print(f'O arquivo: {fileDB} não existe!')
-        exit(-1)
     else:
-        if new == "new":
+        if new == 'new':
             os.remove(fileDB)
-        else:
-            pass
 
-    # Criando a base de dados
+    #Criando a base de dados
     connection = sqlite3.connect(fileDB)
 
     # Get a cursor object
@@ -55,6 +34,7 @@ def chamada_db(new):
 #Criacao de tabelas
 def create_table():
     cursor, connection = chamada_db('new')
+
     #Criação da tabela pizza
     cursor.execute('CREATE TABLE IF NOT EXISTS pizza \
                        (id_pizza INTEGER PRIMARY KEY AUTOINCREMENT, \
@@ -96,4 +76,4 @@ def create_table():
                                    valor_unit float, \
                                    sub_total float )')
 
-    print('          ***** BANCO REINICIADO *****')
+    print('\n         ***** BANCO  REINICIADO *****')

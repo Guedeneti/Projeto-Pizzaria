@@ -2,7 +2,7 @@
 Data.Criacao: 2020-05-10
 Projeto.....: Projeto Pizzaria
 Descricao...: Realizar inserção no banco de dados com passagem de parametos, minimizando codigo.
-Arquivo.....: db_pizza.py - Inserção padrão em tabelas no banco de dados
+Arquivo.....: db_report.py - Inserção padrão em tabelas no banco de dados
 Autor.......: Mateus Pompermayer
 Observações.: 2020-05-10 - [R00] Criação do Arquivo - Versao 1.00
               2020-05-13 - [R00] Criação da funcao Insert - Versao 1.00
@@ -45,40 +45,29 @@ def Update(pizzaupdate, inativacao):
 
 ####################################################################################################################################################################################################################################################
 
-def Select(PizzaCodigo, bool, select):
+def Select(Tabela, Codigo):
     cursor, connection = tables.chamada_db('nao')
-    if select == True:
-        cursor.execute("SELECT id_pizza, tipo, nome, ingredientes, valor_custo, data_inativacao from pizza where id_pizza = ?", (PizzaCodigo,) )
+    if Tabela == 'Cliente':
+
+        cursor.execute("SELECT id_pizza, tipo, nome, ingredientes, valor_custo, data_inativacao from pizza where id_pizza = ?", (Codigo,) )
+
         pizza = cursor.fetchone()  # retrieve the first row
         connection.close()
-        return pizza
-    else:
-        if bool == True:
-            cursor.execute("SELECT id_pizza, tipo, nome, ingredientes, valor_custo, data_criacao from pizza where id_pizza = ? and data_inativacao is null", (PizzaCodigo,) )
-            pizza = cursor.fetchone()  # retrieve the first row
-            print('\nPizza Selecionada..:', pizza[2])
-            if pizza == None:
-                connection.close()
-                return print('\n      ***** Nenhuma pizza encontrada *****')
-            else:
-                connection.close()
-                return print('      Id............:', pizza[0], '\n' , '     Tipo..........:', pizza[1], '\n', '     Nome..........:', pizza[2], '\n', '     Ingredientes...:', pizza[3],
-                          '\n', '     Valor Custo...: R$', pizza[4], '\n', '     Data Criação..:', pizza[5])  # Imprime o primeiro campo
-        else:
-            cursor.execute("SELECT id_pizza, tipo, nome, ingredientes, valor_custo, data_criacao from pizza where data_inativacao is null")
-            pizzas = cursor.fetchall()  # retrieve the first row
 
-            print('\n           ***** Todas Pizzas *****\n')
-            if pizzas == None:
-                connection.close()
-                return print('\n      ***** Nenhuma pizza encontrada *****')
-            else:
-                for pizza in pizzas:
-                 pizzas = [print('      Id............:', pizza[0], '\n' , '     Tipo..........:', pizza[1], '\n', '     Nome..........:', pizza[2], '\n', '     Ingredientes...:', pizza[3],
-                          '\n', '     Valor Custo...: R$', pizza[4], '\n', '     Data Criação..:', pizza[5])]
-                 print('\n')
-                connection.close()
-                return pizzas
+        return pizza
+
+    elif Tabela == 'Pizza':
+        cursor.execute("SELECT id_pizza, tipo, nome, ingredientes, valor_custo, data_criacao from pizza where data_inativacao is null")
+        pizzas = cursor.fetchall()  # retrieve the first row
+        if pizzas == None:
+            connection.close()
+            return print('\n      ***** Nenhuma pizza encontrada *****')
+        else:
+            connection.close()
+            return pizzas
+
+    elif Tabela == 'Pedido':
+        pass
 
 ##################################################################################################################################################################################################################################################
 
@@ -118,8 +107,8 @@ def create_db_pizza():
                     ('Doce', 'BRIGADEIRO', 'Chocolate, leite condensado e chocolate granulado', '23,90', data),
                     ('Doce', 'PRESTIGIO', 'Chocolate coberta com côco', '23,90', data)]
 
-    cursor.executemany("INSERT INTO pizza(tipo, nome, ingredientes, valor_custo, data_criacao) \
-                                values (:tipo, :nome, :ingredientes, :valorcusto, :data);", lista_pizza)
+    cursor.executemany("INSERT INTO pizza(nome, tipo, ingredientes, valor_custo, data_criacao) \
+                                values (:nome, :tipo, :ingredientes, :valorcusto, :data);", lista_pizza)
     connection.commit()
     connection.close()
 
