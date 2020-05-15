@@ -13,10 +13,14 @@ from source.db.database import tables
 def insert (usuario):
     cursor, connection = tables.chamada_db('nao')
     cursor.executemany("INSERT INTO user(nome, tel_fix, tel_cel, cep, endereco, numero, complemento, bairro, cidade, uf) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", usuario)
-
     connection.commit()
 
+    cursor.execute("SELECT * FROM user ORDER BY id_user DESC LIMIT 1")
+    id_cliente = cursor.fetchone()
+
     connection.close()
+
+    return format(id_cliente[0])
 
 def select (tipo, ref):
     cursor, connection = tables.chamada_db('nao')

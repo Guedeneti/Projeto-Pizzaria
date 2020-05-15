@@ -44,7 +44,7 @@ def Menu_Cadastro():
 ############################################################################################################################################################################
 
 def Insert ():
-    print('\n         ***** Inserindo  Cliente *****')
+    print('\n          ***** Inserindo Cliente *****')
     print("    ID.............: ", db_user.Achar_Id())
     usuario = [(input('    Nome...........: '),
                 input('    Telefone Fixo..: '),
@@ -57,9 +57,10 @@ def Insert ():
                 input('    Cidade.........: '),
                 input('    UF.............: '))]
 
-    db_user.insert(usuario)
+    ID = db_user.insert(usuario)
+    print('\n         ***** Usuario adicionado *****')
 
-    print('        ***** Usuario adicionado *****')
+    return ID
 
 ############################################################################################################################################################################
 

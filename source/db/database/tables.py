@@ -68,12 +68,12 @@ def create_table():
                                hora datetime )')
 
     cursor.execute('CREATE TABLE IF NOT EXISTS inf_pedido \
-                                  (id_pedido INTEGER PRIMARY KEY, \
-                                   item INTEGER, \
+                                  (id_item INTEGER PRIMARY KEY AUTOINCREMENT, \
+                                   id_pedido INTEGER, \
                                    id_pizza INTERGER, \
                                    tamanho varchar(15), \
                                    qtd float , \
                                    valor_unit float, \
                                    sub_total float )')
 
-    print('\n         ***** BANCO  REINICIADO *****')
+    print('\n          ***** BANCO REINICIADO *****')

@@ -15,7 +15,6 @@ Observações.: 2020-05-10 - [R00] Criação do Arquivo - Versao 1.00
               2020-05-11 - [R08] Tentativa de criação da função data_entry - Versao 1.00
               ...
 """
-
 import datetime
 from source.mov import pedido
 from source import user
@@ -24,16 +23,19 @@ from source.report import report
 from source.db.database import tables
 from source.db import db_pizza
 
-
 # Retorna somente a data e hora atual,
 def Datetime_fmt(formatstring):
     # no formato YYYY-MM-DD HH: MM:SS
     if formatstring == 'YYYY-MM-DD HH:MM:SS.MS':
         return format(datetime.datetime.now())
-
+    if formatstring == 'YYYY-MM-DD':
+        return format(datetime.date.today())
+    if formatstring == 'HH:MM:SS':
+        minutesLater = datetime.datetime.today() + datetime.timedelta(minutes = 50)
+        minutesLater = minutesLater.strftime("%H:%M:%S")
+        return format(minutesLater)
 def Limpar_Tela():
     print('\n' * 40)
-
 def Cabecalho_Geral():
     Limpar_Tela()
     print('\n************************************************')
@@ -41,10 +43,8 @@ def Cabecalho_Geral():
     print('* Desenvolvido por Guedeneti                   *')
     print('* Centro Universiário "Padre Anchieta"         *')
     print('************************************************')
-
 def Pause():
     programPause = input("\nPressione <ENTER> para continuar...")
-
 def Menu_Inicial():
     Cabecalho_Geral()
     opcao = 1
@@ -70,7 +70,6 @@ def Menu_Inicial():
                 Menu_Movimentacao()
             elif opcao == 4:
                 report.Menu_Relatorio()
-
 def Menu_Movimentacao():
     opcao = 1;
     while opcao != 0:
@@ -103,8 +102,34 @@ def Menu_Movimentacao():
                     elif ref == 'SAIR':
                         ref= 'BOB-PIZZARIA'
 
-
-
-    
-
-
+def Calcular_Valor(Tamanho, Valor, Qtde):
+    if Tamanho == 'Media':
+        Valor_Parcial = (Valor * 1.15) * Qtde
+        Valor_Unit = Valor * 1.15
+        Valor_Parcial = float("{:.2f}".format(Valor_Parcial))
+        Valor_Unit = float("{:.2f}".format(Valor_Unit))
+        Valor_Unit = str(Valor_Unit)
+        Valor_Parcial = str(Valor_Parcial)
+        Valor_Unit = str(Valor_Unit.replace('.', ','))
+        Valor_Parcial = str(Valor_Parcial.replace('.', ','))
+        return Valor_Parcial, Valor_Unit
+    elif Tamanho == 'Grande':
+        Valor_Parcial = (Valor * 1.25) * Qtde
+        Valor_Unit = Valor * 1.25
+        Valor_Parcial = float("{:.2f}".format(Valor_Parcial))
+        Valor_Unit = float("{:.2f}".format(Valor_Unit))
+        Valor_Unit = str(Valor_Unit)
+        Valor_Parcial = str(Valor_Parcial)
+        Valor_Unit = str(Valor_Unit.replace('.', ','))
+        Valor_Parcial = str(Valor_Parcial.replace('.', ','))
+        return Valor_Parcial, Valor_Unit
+    elif Tamanho == 'Gigante':
+        Valor_Parcial = (Valor * 1.35) * Qtde
+        Valor_Unit = Valor * 1.35
+        Valor_Parcial = float("{:.2f}".format(Valor_Parcial))
+        Valor_Unit = float("{:.2f}".format(Valor_Unit))
+        Valor_Unit = str(Valor_Unit)
+        Valor_Parcial = str(Valor_Parcial)
+        Valor_Unit = str(Valor_Unit.replace('.', ','))
+        Valor_Parcial = str(Valor_Parcial.replace('.', ','))
+        return Valor_Parcial, Valor_Unit

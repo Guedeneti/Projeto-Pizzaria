@@ -62,7 +62,7 @@ def Select(PizzaCodigo, bool, select):
                 return print('\n      ***** Nenhuma pizza encontrada *****')
             else:
                 connection.close()
-                return print('      Id............:', pizza[0], '\n' , '     Tipo..........:', pizza[1], '\n', '     Nome..........:', pizza[2], '\n', '     Igredientes...:', pizza[3],
+                return print('      Id............:', pizza[0], '\n' , '     Tipo..........:', pizza[1], '\n', '     Nome..........:', pizza[2], '\n', '     Ingredientes...:', pizza[3],
                           '\n', '     Valor Custo...: R$', pizza[4], '\n', '     Data Criação..:', pizza[5])  # Imprime o primeiro campo
         else:
             cursor.execute("SELECT id_pizza, tipo, nome, ingredientes, valor_custo, data_criacao from pizza where data_inativacao is null")
@@ -74,7 +74,7 @@ def Select(PizzaCodigo, bool, select):
                 return print('\n      ***** Nenhuma pizza encontrada *****')
             else:
                 for pizza in pizzas:
-                 pizzas = [print('      Id............:', pizza[0], '\n' , '     Tipo..........:', pizza[1], '\n', '     Nome..........:', pizza[2], '\n', '     Igredientes...:', pizza[3],
+                 pizzas = [print('      Id............:', pizza[0], '\n' , '     Tipo..........:', pizza[1], '\n', '     Nome..........:', pizza[2], '\n', '     Ingredientes...:', pizza[3],
                           '\n', '     Valor Custo...: R$', pizza[4], '\n', '     Data Criação..:', pizza[5])]
                  print('\n')
                 connection.close()
@@ -118,8 +118,8 @@ def create_db_pizza():
                     ('Doce', 'BRIGADEIRO', 'Chocolate, leite condensado e chocolate granulado', '23,90', data),
                     ('Doce', 'PRESTIGIO', 'Chocolate coberta com côco', '23,90', data)]
 
-    cursor.executemany("INSERT INTO pizza(nome, tipo, ingredientes, valor_custo, data_criacao) \
-                                values (:nome, :tipo, :ingredientes, :valorcusto, :data);", lista_pizza)
+    cursor.executemany("INSERT INTO pizza(tipo, nome, ingredientes, valor_custo, data_criacao) \
+                                values (:tipo, :nome, :ingredientes, :valorcusto, :data);", lista_pizza)
     connection.commit()
     connection.close()
 
