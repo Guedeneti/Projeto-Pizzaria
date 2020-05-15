@@ -23,6 +23,7 @@ from source import pizza
 from source.report import report
 from source.db.database import tables
 from source.db import db_pizza
+from source.db import db_pedido
 
 
 # Retorna somente a data e hora atual,
@@ -111,7 +112,7 @@ def Menu_Movimentacao():
 
 
 def Calcular_Valor(Tamanho, Valor, Qtde):
-    if Tamanho == 'Medio':
+    if Tamanho == 'Media':
         Valor_Parcial = (Valor * 1.15) * Qtde
         Valor_Unit = Valor * 1.15
 
@@ -151,6 +152,33 @@ def Calcular_Valor(Tamanho, Valor, Qtde):
 
         return Valor_Parcial, Valor_Unit
 
-    
+def Valores_Pedido(Pedido, id_pedido, Troco):
+    if Pedido == 'Total':
+        Valores = db_pedido.Select(id_pedido, 'Valor')
+        Total = 0
+
+        for Valor in Valores:
+            ValorFloat = float(Valor[0].replace(',', '.'))
+            Total = float("{:.2f}".format(Total + ValorFloat))
+
+        Total = str(Total)
+        Total = str(Total.replace('.', ','))
+
+        return Total
+
+    if Pedido == 'Troco':
+        Valores = db_pedido.Select(id_pedido, 'Valor')
+        Total = 0
+        for Valor in Valores:
+            ValorFloat = float(Valor[0].replace(',', '.'))
+            Total = float("{:.2f}".format(Total + ValorFloat))
+
+        TrocoFloat = float(Troco.replace(',', '.'))
+        Troco = float("{:.2f}".format(TrocoFloat - Total))
+
+        Troco = str(Troco)
+        Troco = str(Troco.replace('.', ','))
+
+        return Troco
 
 

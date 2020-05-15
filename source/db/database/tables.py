@@ -65,11 +65,13 @@ def create_table():
                               (id_pedido INTEGER PRIMARY KEY AUTOINCREMENT, \
                                id_user INTERGER, \
                                data_inicio date, \
-                               hora datetime )')
+                               hora datetime, \
+                               troco_pedido decimal(10,2), \
+                               total_pedido decimal(10,2) )')
 
     cursor.execute('CREATE TABLE IF NOT EXISTS inf_pedido \
-                                  (id_pedido INTEGER PRIMARY KEY, \
-                                   item INTEGER, \
+                                  (id_item INTEGER PRIMARY KEY AUTOINCREMENT, \
+                                   id_pedido INTEGER, \
                                    id_pizza INTERGER, \
                                    tamanho varchar(15), \
                                    qtd float , \
