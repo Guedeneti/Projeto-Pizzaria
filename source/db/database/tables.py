@@ -65,7 +65,9 @@ def create_table():
                               (id_pedido INTEGER PRIMARY KEY AUTOINCREMENT, \
                                id_user INTERGER, \
                                data_inicio date, \
-                               hora datetime )')
+                               hora datetime, \
+                               troco_pedido decimal(10,2), \
+                               total_pedido decimal(10,2) )')
 
     cursor.execute('CREATE TABLE IF NOT EXISTS inf_pedido \
                                   (id_item INTEGER PRIMARY KEY AUTOINCREMENT, \
@@ -76,4 +78,4 @@ def create_table():
                                    valor_unit float, \
                                    sub_total float )')
 
-    print('\n          ***** BANCO REINICIADO *****')
+    print('\n         ***** BANCO  REINICIADO *****')

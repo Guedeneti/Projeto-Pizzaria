@@ -17,7 +17,7 @@ def Abrir ():
     opcao = 1
     while opcao != 0:
         try:
-            print('\n******************** PEDIDOS *******************')
+            print('\n******************* PEDIDOS *******************')
             print('   [1] - Fazer Pedido')
             print('   [0] - Voltar')
             opcao = int(input('Digite a opção desejada: '))
@@ -50,18 +50,24 @@ def Fazer_Pedido( New, id_pedido):
                     ID_User = cliente[0]
 
                     if pizzas != None:
-                        print("\nUltimas 3 Pizzas Pedidas:")
+                        if pizzas[0][7] == 2 and pizzas[0][7] == 3:
+                            print(f"\nUltimas {pizzas[0][7]} Pizzas Pedidas:")
+                        elif pizzas[0][7] > 3:
+                            print(f"\nUltimas 3 Pizzas Pedidas:")
+                        elif pizzas[0][7] == 1:
+                            print(f"\nUltima Pizza Pedida:")
 
                         for pizza in pizzas:
-                            print('\n')
-                            print('     Nome..........: ', pizza[2])
-                            print('     Tipo..........: ', pizza[1])
-                            print('     Igredientes...: ', pizza[3])
-                            print('     Valor Custo...: R$', pizza[4])
+                            if pizza[0] != None:
+                                print('\n')
+                                print('     ID............: ', pizza[0])
+                                print('     Nome..........: ', pizza[2])
+                                print('     Tipo..........: ', pizza[1])
+                                print('     Valor Custo...: R$', pizza[4])
                     else:
                         print("\n           ***** Sem  Historico *****")
                 else:
-                    print('\n      ***** Nenhum Cadastro Encontrado *****')
+                    print('\n     ***** Nenhum Cadastro Encontrado *****')
                     ID_User = user.Insert()
 
         pedido = [ID_User]
@@ -109,9 +115,12 @@ def Fazer_Pedido( New, id_pedido):
         except ValueError as e:
             print("\n           ***** Valor Inválido *****")
         else:
-            pizza.append(quantidadepizza)
-            Quantidade = False
-            print('    Quantidade.: ' + str(quantidadepizza))
+            if quantidadepizza > 0:
+                pizza.append(quantidadepizza)
+                Quantidade = False
+                print('    Quantidade.: ' + str(quantidadepizza))
+            else:
+                print("\n           ***** Valor Inválido *****")
 
     Valor_Parcial, Valor_Unit = library.Calcular_Valor(tamanhopizza, float(selectpizza[4].replace(',', '.')), quantidadepizza)
     pizza.append(Valor_Unit)
@@ -120,8 +129,8 @@ def Fazer_Pedido( New, id_pedido):
     print('    Valor Sub Total..: ' + str(Valor_Parcial))
     while Pedido:
         try:
-            print('\n   [0] - Concluir Pedido')
-            print('   [1] - Incluir mais Pizzas')
+            print('\n   [1] - Incluir mais Pizzas')
+            print('   [0] - Concluir Pedido')
             opcao = int(input("Escolha uma opcao: "))
             if not 0 <= opcao <= 1:
                 raise ValueError("\n           ***** Valor Inválido *****")
@@ -130,14 +139,68 @@ def Fazer_Pedido( New, id_pedido):
         else:
             if opcao in range(0, 2):
                 if New == False:
+                    db_pedido.Update('Hora', library.Datetime_fmt('HH:MM:SS'), id_pedido)
                     ID_Pedido = id_pedido
                 if opcao == 1:
                     pizza.append(ID_Pedido)
                     Pedido = False
                     db_pedido.Insert('Itens', pizza)
+                    Total_Parcial = library.Valores_Pedido('Total', ID_Pedido, None)
+                    print('Valor Total-Parcial do Pedido: R$', Total_Parcial)
                     Fazer_Pedido(False, ID_Pedido)
                 else:
                     pizza.append(ID_Pedido)
                     db_pedido.Insert('Itens', pizza)
                     Pedido = False
-                    print('\n          ***** Pedido Realizado *****')
+                    Total_Pedido = library.Valores_Pedido('Total', ID_Pedido, None)
+                    Troco = True
+                    while Troco:
+                        try:
+                            print('\nValor Total do Pedido: R$', Total_Pedido)
+                            print('\n   [1] - Precisa de Troco')
+                            print('   [0] - Nao precisa de Troco')
+                            opcaotroco = int(input("Escolha uma opcao: "))
+                            if not 0 <= opcao <= 1:
+                                raise ValueError("\n           ***** Valor Inválido *****")
+                        except ValueError as e:
+                            print("\n           ***** Valor Inválido *****")
+                        else:
+                            if opcaotroco in range(0, 2):
+                                Troco = False
+                                if opcaotroco == 1:
+                                    Precisa = True
+                                    while Precisa:
+                                        try:
+                                            print('\nValor Total do Pedido: R$', Total_Pedido)
+
+                                            valortroco = input("Troco para quantos R$: ")
+                                            if not(valortroco.replace(',','',1).isdigit()):
+                                                raise ValueError("\n           ***** Valor Inválido *****")
+
+                                        except ValueError as e:
+                                            print("\n           ***** Valor Inválido *****")
+
+                                        else:
+                                            if valortroco.replace(',','',1).isdigit():
+                                                if (float(valortroco.replace(',', '.')) > float(Total_Pedido.replace(',', '.'))):
+                                                    Precisa = False
+                                                    db_pedido.Update('Total', Total_Pedido, ID_Pedido)
+                                                    valortroco = library.Valores_Pedido('Troco', ID_Pedido, valortroco)
+                                                    db_pedido.Update('Troco', valortroco, ID_Pedido)
+                                                    print('\nValor Total do Pedido: R$', Total_Pedido)
+                                                    print('\nValor do troco a ser levado: R$', valortroco)
+
+                                                    PrevisaoEntrega = db_pedido.Select(ID_Pedido, 'Hora')
+                                                    print('\nPrevisao para Entrega: ', PrevisaoEntrega[0][0])
+
+                                                    print('\n          ***** Pedido Realizado *****')
+                                                else:
+                                                    print('\nValor menor que o total!\n')
+                                else:
+                                    db_pedido.Update('Total', Total_Pedido, ID_Pedido)
+                                    db_pedido.Update('Troco', 0, ID_Pedido)
+                                    PrevisaoEntrega = db_pedido.Select(ID_Pedido, 'Hora')
+                                    print('\nValor Total do Pedido: R$', Total_Pedido)
+                                    print('\nPrevisao para Entrega: ', PrevisaoEntrega[0][0])
+
+                                    print('\n          ***** Pedido Realizado *****')

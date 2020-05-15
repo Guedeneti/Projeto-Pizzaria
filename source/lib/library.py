@@ -15,6 +15,7 @@ Observações.: 2020-05-10 - [R00] Criação do Arquivo - Versao 1.00
               2020-05-11 - [R08] Tentativa de criação da função data_entry - Versao 1.00
               ...
 """
+
 import datetime
 from source.mov import pedido
 from source import user
@@ -22,6 +23,8 @@ from source import pizza
 from source.report import report
 from source.db.database import tables
 from source.db import db_pizza
+from source.db import db_pedido
+
 
 # Retorna somente a data e hora atual,
 def Datetime_fmt(formatstring):
@@ -34,8 +37,10 @@ def Datetime_fmt(formatstring):
         minutesLater = datetime.datetime.today() + datetime.timedelta(minutes = 50)
         minutesLater = minutesLater.strftime("%H:%M:%S")
         return format(minutesLater)
+
 def Limpar_Tela():
     print('\n' * 40)
+
 def Cabecalho_Geral():
     Limpar_Tela()
     print('\n************************************************')
@@ -43,8 +48,10 @@ def Cabecalho_Geral():
     print('* Desenvolvido por Guedeneti                   *')
     print('* Centro Universiário "Padre Anchieta"         *')
     print('************************************************')
+
 def Pause():
     programPause = input("\nPressione <ENTER> para continuar...")
+
 def Menu_Inicial():
     Cabecalho_Geral()
     opcao = 1
@@ -70,6 +77,7 @@ def Menu_Inicial():
                 Menu_Movimentacao()
             elif opcao == 4:
                 report.Menu_Relatorio()
+
 def Menu_Movimentacao():
     opcao = 1;
     while opcao != 0:
@@ -102,34 +110,75 @@ def Menu_Movimentacao():
                     elif ref == 'SAIR':
                         ref= 'BOB-PIZZARIA'
 
+
 def Calcular_Valor(Tamanho, Valor, Qtde):
     if Tamanho == 'Media':
         Valor_Parcial = (Valor * 1.15) * Qtde
         Valor_Unit = Valor * 1.15
+
         Valor_Parcial = float("{:.2f}".format(Valor_Parcial))
         Valor_Unit = float("{:.2f}".format(Valor_Unit))
+
         Valor_Unit = str(Valor_Unit)
         Valor_Parcial = str(Valor_Parcial)
         Valor_Unit = str(Valor_Unit.replace('.', ','))
         Valor_Parcial = str(Valor_Parcial.replace('.', ','))
+
         return Valor_Parcial, Valor_Unit
     elif Tamanho == 'Grande':
         Valor_Parcial = (Valor * 1.25) * Qtde
         Valor_Unit = Valor * 1.25
+
         Valor_Parcial = float("{:.2f}".format(Valor_Parcial))
         Valor_Unit = float("{:.2f}".format(Valor_Unit))
+
         Valor_Unit = str(Valor_Unit)
         Valor_Parcial = str(Valor_Parcial)
         Valor_Unit = str(Valor_Unit.replace('.', ','))
         Valor_Parcial = str(Valor_Parcial.replace('.', ','))
+
         return Valor_Parcial, Valor_Unit
     elif Tamanho == 'Gigante':
         Valor_Parcial = (Valor * 1.35) * Qtde
         Valor_Unit = Valor * 1.35
+
         Valor_Parcial = float("{:.2f}".format(Valor_Parcial))
         Valor_Unit = float("{:.2f}".format(Valor_Unit))
+
         Valor_Unit = str(Valor_Unit)
         Valor_Parcial = str(Valor_Parcial)
         Valor_Unit = str(Valor_Unit.replace('.', ','))
         Valor_Parcial = str(Valor_Parcial.replace('.', ','))
+
         return Valor_Parcial, Valor_Unit
+
+def Valores_Pedido(Pedido, id_pedido, Troco):
+    if Pedido == 'Total':
+        Valores = db_pedido.Select(id_pedido, 'Valor')
+        Total = 0
+
+        for Valor in Valores:
+            ValorFloat = float(Valor[0].replace(',', '.'))
+            Total = float("{:.2f}".format(Total + ValorFloat))
+
+        Total = str(Total)
+        Total = str(Total.replace('.', ','))
+
+        return Total
+
+    if Pedido == 'Troco':
+        Valores = db_pedido.Select(id_pedido, 'Valor')
+        Total = 0
+        for Valor in Valores:
+            ValorFloat = float(Valor[0].replace(',', '.'))
+            Total = float("{:.2f}".format(Total + ValorFloat))
+
+        TrocoFloat = float(Troco.replace(',', '.'))
+        Troco = float("{:.2f}".format(TrocoFloat - Total))
+
+        Troco = str(Troco)
+        Troco = str(Troco.replace('.', ','))
+
+        return Troco
+
+
