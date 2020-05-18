@@ -48,22 +48,44 @@ def Fazer_Pedido( New, id_pedido):
                 Tel = False
                 if cliente != None:
                     ID_User = cliente[0]
-
-                    if pizzas != None:
-                        if pizzas[0][7] == 2 and pizzas[0][7] == 3:
-                            print(f"\nUltimas {pizzas[0][7]} Pizzas Pedidas:")
-                        elif pizzas[0][7] > 3:
+                    if pizzas[0][0] != None:
+                        if pizzas[0][13] == 2 and pizzas[0][13] == 3:
+                            print(f"\nUltimas {pizzas[0][13]} Pizzas Pedidas:")
+                        elif pizzas[0][13] > 3:
                             print(f"\nUltimas 3 Pizzas Pedidas:")
-                        elif pizzas[0][7] == 1:
+                        elif pizzas[0][13] == 1:
                             print(f"\nUltima Pizza Pedida:")
 
                         for pizza in pizzas:
                             if pizza[0] != None:
-                                print('\n')
-                                print('     ID............: ', pizza[0])
-                                print('     Nome..........: ', pizza[2])
-                                print('     Tipo..........: ', pizza[1])
-                                print('     Valor Custo...: R$', pizza[4])
+                                if pizza[0] == 'Inteira':
+                                    print('\n')
+                                    print('     Pizza.........: ', pizza[0])
+                                    print('     ID............: ', pizza[1])
+                                    print('     Nome..........: ', pizza[2])
+                                    print('     Tipo..........: ', pizza[3])
+                                    print('     Valor Custo...: R$', pizza[4])
+                                elif pizza[0] == 'Meia':
+                                    if (float(pizza[8].replace(',', '.')) > float(pizza[12].replace(',', '.'))):
+                                        print('\n')
+                                        print('     Pizza.........: ', pizza[0])
+                                        print('     ID 1/2........: ', pizza[5])
+                                        print('     ID 2/2........: ', pizza[9])
+                                        print('     Metade 1/2....: ', pizza[6])
+                                        print('     Metade 2/2....: ', pizza[10])
+                                        print('     Tipo 1/2......: ', pizza[7])
+                                        print('     Tipo 2/2......: ', pizza[11])
+                                        print('     Valor Custo...: R$', pizza[8])
+                                    else:
+                                        print('\n')
+                                        print('     Pizza.........: ', pizza[0])
+                                        print('     ID 1/2........: ', pizza[5])
+                                        print('     ID 2/2........: ', pizza[9])
+                                        print('     Metade 1/2....: ', pizza[6])
+                                        print('     Metade 2/2....: ', pizza[10])
+                                        print('     Tipo 1/2......: ', pizza[7])
+                                        print('     Tipo 2/2......: ', pizza[11])
+                                        print('     Valor Custo...: R$', pizza[12])
                     else:
                         print("\n           ***** Sem  Historico *****")
                 else:
@@ -77,21 +99,72 @@ def Fazer_Pedido( New, id_pedido):
     print("\n         ***** Selecionar  Pizzas *****")
     Tamanho = True
     Quantidade = True
-    CodigoPizza = True
+    CodigoPizzaInteira = True
+    CodigoPizzaMeiaUm = True
+    CodigoPizzaMeiaDois = True
+    PizzaInteiraMeia = True
     Pedido = True
     options = ["Media", "Grande", "Gigante"]
+    optionspizza = ["Inteira", "Meia"]
 
-    while CodigoPizza:
+    while PizzaInteiraMeia:
         try:
-            cod_pizza = int(input("\nCodigo da Pizza: "))
+            print('\nEscolha uma opcao: ')
+            print('\n   [1] - ' + optionspizza[0])
+            print('   [2] - ' + optionspizza[1])
+            opcaopizza = int(input("Pizza Inteira ou Meia: "))
+            if not 1 <= opcaopizza <= 2:
+                raise ValueError("\n           ***** Valor Inválido *****")
         except ValueError as e:
             print("\n           ***** Valor Inválido *****")
         else:
-            selectpizza = db_pedido.Select(cod_pizza, 'Pizza')
-            if selectpizza != 0:
-                CodigoPizza = False
-                pizza = [(cod_pizza)]
-                print('    Pizza...: ' + selectpizza[2])
+            if opcaopizza in range(1, 3):
+                pizzainteirameia = optionspizza[opcaopizza - 1]
+                PizzaInteiraMeia = False
+                pizza = [(pizzainteirameia)]
+                print('    Pizza...: ' + pizzainteirameia)
+
+    if pizzainteirameia == 'Inteira':
+        while CodigoPizzaInteira:
+            try:
+                cod_pizza = int(input("\nCodigo da Pizza Inteira: "))
+            except ValueError as e:
+                print("\n           ***** Valor Inválido *****")
+            else:
+                selectpizza = db_pedido.Select(cod_pizza, 'Pizza')
+                if selectpizza != 0:
+                    CodigoPizzaInteira = False
+                    pizza.append(cod_pizza)
+                    print('    Pizza...: ' + selectpizza[2])
+    elif pizzainteirameia == 'Meia':
+        while CodigoPizzaMeiaUm:
+            try:
+                cod_pizza = int(input("\nCodigo da Pizza 1/2: "))
+            except ValueError as e:
+                print("\n           ***** Valor Inválido *****")
+            else:
+                selectpizzaMeiaUm = db_pedido.Select(cod_pizza, 'Pizza')
+                if selectpizzaMeiaUm != 0:
+                    CodigoPizzaMeiaUm = False
+                    CodigoMeiaUm = cod_pizza
+                    pizza.append(cod_pizza)
+                    print('    Pizza 1/2...: ' + selectpizzaMeiaUm[2])
+        while CodigoPizzaMeiaDois:
+            try:
+                cod_pizza = int(input("\nCodigo da Pizza 2/2: "))
+            except ValueError as e:
+                print("\n           ***** Valor Inválido *****")
+            else:
+                if cod_pizza != CodigoMeiaUm:
+                    selectpizzaMeiaDois = db_pedido.Select(cod_pizza, 'Pizza')
+                    if selectpizzaMeiaDois != 0:
+                        CodigoPizzaMeiaDois = False
+                        pizza.append(cod_pizza)
+                        print('    Pizza 2/2...: ' + selectpizzaMeiaDois[2])
+                else:
+                    print("\n           ***** Valor Inválido *****")
+                    print("           **** Valor Indêntico ****")
+
     while Tamanho:
         try:
             print('\nEscolha uma opcao: ')
@@ -111,7 +184,10 @@ def Fazer_Pedido( New, id_pedido):
                 print('    Tamanho....: ' + tamanhopizza)
     while Quantidade:
         try:
-            quantidadepizza = int(input(f"Quantidade da Pizza {selectpizza[2]}: "))
+            if pizzainteirameia == 'Inteira':
+                quantidadepizza = int(input(f"Quantidade da Pizza {selectpizza[2]}: "))
+            elif pizzainteirameia == 'Meia':
+                quantidadepizza = int(input(f"Quantidade da Pizza Meia {selectpizzaMeiaUm[2]}, Meia {selectpizzaMeiaDois[2]}: "))
         except ValueError as e:
             print("\n           ***** Valor Inválido *****")
         else:
@@ -122,7 +198,16 @@ def Fazer_Pedido( New, id_pedido):
             else:
                 print("\n           ***** Valor Inválido *****")
 
-    Valor_Parcial, Valor_Unit = library.Calcular_Valor(tamanhopizza, float(selectpizza[4].replace(',', '.')), quantidadepizza)
+    if pizzainteirameia == 'Inteira':
+        Valor_Parcial, Valor_Unit = library.Calcular_Valor(tamanhopizza, float(selectpizza[4].replace(',', '.')), quantidadepizza)
+
+    elif pizzainteirameia == 'Meia':
+        if (float(selectpizzaMeiaUm[4].replace(',', '.')) > float(selectpizzaMeiaDois[4].replace(',', '.'))):
+            Valor_Parcial, Valor_Unit = library.Calcular_Valor(tamanhopizza, float(selectpizzaMeiaUm[4].replace(',', '.')),quantidadepizza)
+        else:
+            Valor_Parcial, Valor_Unit = library.Calcular_Valor(tamanhopizza, float(selectpizzaMeiaDois[4].replace(',', '.')),quantidadepizza)
+
+
     pizza.append(Valor_Unit)
     pizza.append(Valor_Parcial)
     print('\n    Valor Unitario...: ' + str(Valor_Unit))
@@ -144,13 +229,19 @@ def Fazer_Pedido( New, id_pedido):
                 if opcao == 1:
                     pizza.append(ID_Pedido)
                     Pedido = False
-                    db_pedido.Insert('Itens', pizza)
+                    if pizzainteirameia == 'Inteira':
+                        db_pedido.Insert('Inteira', pizza)
+                    elif pizzainteirameia == 'Meia':
+                        db_pedido.Insert('Meia', pizza)
                     Total_Parcial = library.Valores_Pedido('Total', ID_Pedido, None)
                     print('Valor Total-Parcial do Pedido: R$', Total_Parcial)
                     Fazer_Pedido(False, ID_Pedido)
                 else:
                     pizza.append(ID_Pedido)
-                    db_pedido.Insert('Itens', pizza)
+                    if pizzainteirameia == 'Inteira':
+                        db_pedido.Insert('Inteira', pizza)
+                    elif pizzainteirameia == 'Meia':
+                        db_pedido.Insert('Meia', pizza)
                     Pedido = False
                     Total_Pedido = library.Valores_Pedido('Total', ID_Pedido, None)
                     Troco = True

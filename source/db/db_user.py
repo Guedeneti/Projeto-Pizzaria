@@ -28,7 +28,6 @@ def select (tipo, ref):
         if tipo == 1:
             cursor.execute("SELECT * from user where id_user = ?", (ref,))
         elif tipo == 2:
-            print(type(ref))
             cursor.execute("SELECT * from user where tel_fix = :ref", (ref,))
         elif tipo == 3:
             cursor.execute("SELECT * from user where tel_cel = ?", (ref,))
@@ -73,6 +72,8 @@ def Achar_Id():
     cursor.execute("SELECT id_user from user")
     user = cursor.fetchall()
     if user == None:
+        cursor.execute("DELETE FROM SQLITE_SEQUENCE where name = 'user'")
+        connection.commit()
         user = 1
     connection.close()
     return len(user) + 1

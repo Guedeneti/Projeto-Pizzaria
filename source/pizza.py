@@ -24,10 +24,9 @@ def Menu_Cadastro():
             print('   [2] - Alterar')
             print('   [3] - Consultar')
             print('   [4] - Excluir')
-            print('   [5] - Voltar para 15 pizzas')
             print('   [0] - Voltar')
             opcao = int(input('Digite a opção desejada: '))
-            if not 0 <= opcao <= 5:
+            if not 0 <= opcao <= 4:
                 raise ValueError("\n           ***** Valor Inválido *****")
         except ValueError as e:
             print("\n           ***** Valor Inválido *****")
@@ -40,9 +39,6 @@ def Menu_Cadastro():
                 Select()
             elif opcao == 4:
                 Delete()
-            elif opcao == 5:
-                db_pizza.create_db_pizza()
-                print('\n            ***** PIZZAS PADRÃO *****')
 
 def Insert():
 
@@ -102,17 +98,17 @@ def Update():
             PizzaCodigo = int(input('\n    Digite o Codigo da Pizza...........: '))
         except:
             print("\n           ***** Valor Inválido *****")
-
         else:
             pizza = db_pizza.Select(PizzaCodigo, False, True)
-            print('\nPizza Selecionada: ', pizza[2])
-            print('     Id............: ', pizza[0])
-            print('     Tipo..........: ', pizza[1])
-            print('     Nome..........: ', pizza[2])
-            print('     Igredientes...: ', pizza[3])
-            print('     Valor Custo...: R$', pizza[4])
-            pizzainativa = pizza[5]
-            update = False
+            if pizza != None:
+                print('\nPizza Selecionada: ', pizza[2])
+                print('     Id............: ', pizza[0])
+                print('     Tipo..........: ', pizza[1])
+                print('     Nome..........: ', pizza[2])
+                print('     Igredientes...: ', pizza[3])
+                print('     Valor Custo...: R$', pizza[4])
+                pizzainativa = pizza[5]
+                update = False
 
     if pizzainativa != None:
         inativacao = True
@@ -205,22 +201,25 @@ def Select():
         try:
             print('\n   [1] - Uma Pizza')
             print('   [2] - Todas Pizzas')
+            print('   [3] - Pizzas Desativadas')
             opcaoselect = int(input("Digite a opção desejada: "))
-            if not 1 <= opcaoselect <= 2:
+            if not 1 <= opcaoselect <= 3:
                 raise ValueError("\n           ***** Valor Inválido *****")
         except ValueError as e:
             print("\n           ***** Valor Inválido *****")
 
         else:
-            if opcaoselect in range(1, 3):
+            if opcaoselect in range(1, 4):
                 if(opcaoselect == 1):
                     PizzaCodigo = int(input('\n    Digite o Codigo da Pizza...........: '))
-                    db_pizza.Select(PizzaCodigo, True, False)
+                    db_pizza.Select(PizzaCodigo, 'Uma', False)
                     Select = False
-                else:
-                    db_pizza.Select( 0, False, False)
+                elif (opcaoselect == 2):
+                    db_pizza.Select( 0, 'Todas', False)
                     Select = False
-
+                elif (opcaoselect == 3):
+                    db_pizza.Select(0, 'Desativadas', False)
+                    Select = False
 def Delete():
     Delete = True
     delete = True
@@ -233,10 +232,11 @@ def Delete():
 
         else:
             pizza = db_pizza.Select(PizzaCodigo, False, True)
-            print('\nPizza Selecionada: ', pizza[2])
-            print('ID:', pizza[0], ';', ' Tipo:', pizza[1], ';', ' Nome:', pizza[2], ';', ' Ingredientes:',
-                  pizza[3], ';', ' Valor Custo:', pizza[4])
-            delete = False
+            if pizza != None:
+                print('\n  Pizza Selecionada: ', pizza[2])
+                print('  ID:', pizza[0], '\n', ' Tipo:', pizza[1], '\n', ' Nome:', pizza[2], '\n', ' Ingredientes:',
+                  pizza[3], '\n', ' Valor Custo:', pizza[4])
+                delete = False
 
     while Delete:
         try:
@@ -255,5 +255,5 @@ def Delete():
                     db_pizza.Delete(data_inativacao, PizzaCodigo)
                     Delete = False
                 else:
-                    print('\n          ***** Cancelado *****\n')
+                    print('\n              ***** Cancelado *****')
                     Delete = False

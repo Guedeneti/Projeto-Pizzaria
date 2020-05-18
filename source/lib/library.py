@@ -45,7 +45,7 @@ def Cabecalho_Geral():
     Limpar_Tela()
     print('\n************************************************')
     print('* BOB´s PIZZARIA - SISTEMA CONTROLE DE PEDIDOS *')
-    print('* Desenvolvido por Guedeneti                   *')
+    print('* Desenvolvido por Guedeneti Systems           *')
     print('* Centro Universiário "Padre Anchieta"         *')
     print('************************************************')
 
@@ -106,7 +106,6 @@ def Menu_Movimentacao():
                     ref = input('    Frase: ')
                     if ref == 'BOB-PIZZARIA':
                         tables.create_table()
-                        db_pizza.create_db_pizza()
                     elif ref == 'SAIR':
                         ref= 'BOB-PIZZARIA'
 

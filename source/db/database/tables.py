@@ -12,6 +12,7 @@ Observações.: 2020-05-12 - [R00] Criação do Arquivo - Versao 1.00
 
 import os
 import sqlite3
+from source.db import db_pizza
 
 
 def chamada_db(new):
@@ -72,10 +73,15 @@ def create_table():
     cursor.execute('CREATE TABLE IF NOT EXISTS inf_pedido \
                                   (id_item INTEGER PRIMARY KEY AUTOINCREMENT, \
                                    id_pedido INTEGER, \
-                                   id_pizza INTERGER, \
+                                   pizza varchar(7), \
+                                   id_pizza_inteira INTERGER, \
+                                   id_pizza_meia_um INTERGER, \
+                                   id_pizza_meia_dois INTERGER, \
                                    tamanho varchar(15), \
                                    qtd float , \
                                    valor_unit float, \
                                    sub_total float )')
+
+    db_pizza.create_db_pizza()
 
     print('\n         ***** BANCO  REINICIADO *****')
