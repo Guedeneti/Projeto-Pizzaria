@@ -20,10 +20,10 @@ def chamada_db(new):
     fileDB = 'C:\\Users\\vinip\\Documents\\Facul\\3SEM\\Saito\\Pyton\\ProjetoPizzaria\\source\\db\\database\\db_pizzaria.sqlite'
 
     # verificando se arquivo de banco de dados existe
-    if not os.path.exists(fileDB):
-        print(f'O arquivo: {fileDB} não existe!')
+    if not os.path.exists(fileDB) and new != 'new':
+        return 0
     else:
-        if new == 'new':
+        if new == 'new' and os.path.exists(fileDB):
             os.remove(fileDB)
 
     #Criando a base de dados
@@ -83,5 +83,5 @@ def create_table():
                                    sub_total float )')
 
     db_pizza.create_db_pizza()
+    connection.close()
 
-    print('\n         ***** BANCO  REINICIADO *****')

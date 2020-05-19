@@ -10,9 +10,16 @@ Observações.: 2020-05-10 - [R00] Criação do Arquivo - Versao 1.00
 """
 
 from source.lib import library
+from source.db.database import tables
 
 
 def main():
+    connection = tables.chamada_db('nao')
+
+    if connection == 0:
+        tables.create_table()
+
+
     library.Menu_Inicial()
 
 if __name__ == '__main__':  # chamada da funcao principal

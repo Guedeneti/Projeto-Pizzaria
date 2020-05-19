@@ -106,6 +106,7 @@ def Menu_Movimentacao():
                     ref = input('    Frase: ')
                     if ref == 'BOB-PIZZARIA':
                         tables.create_table()
+                        print('\n         ***** BANCO  REINICIADO *****')
                     elif ref == 'SAIR':
                         ref= 'BOB-PIZZARIA'
 
