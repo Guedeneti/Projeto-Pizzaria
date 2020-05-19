@@ -12,7 +12,7 @@ from source.db.database import tables
 
 def insert (usuario):
     cursor, connection = tables.chamada_db('nao')
-    cursor.executemany("INSERT INTO user(nome, tel_fix, tel_cel, cep, endereco, numero, complemento, bairro, cidade, uf) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", usuario)
+    cursor.executemany("INSERT INTO user(nome, tel_fix, tel_cel, cep, endereco, numero, complemento, bairro, cidade, uf, data_criacao) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", usuario)
     connection.commit()
 
     cursor.execute("SELECT * FROM user ORDER BY id_user DESC LIMIT 1")
@@ -59,9 +59,10 @@ def delete(ref):
 
     if func == None:
         cursor.execute("Delete from user where id_user = ?", (ref,))
-        print('            ***** Usuario deletado ***** ')
+        connection.commit()
+        print('\n            ***** Usuario deletado ***** ')
     else:
-        print('      ***** Usuario ja realizou um pedido ***** ')
+        print('\n      ***** Usuario ja realizou um pedido ***** ')
         print('          ***** Usuario não deletado ***** ')
 
     connection.close()

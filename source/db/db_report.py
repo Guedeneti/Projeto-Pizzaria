@@ -15,49 +15,11 @@ import os
 from source.db.database import tables
 from source.lib import library
 
-
-def Insert(pizza):
+def Select(Tabela):
     cursor, connection = tables.chamada_db('nao')
-    cursor.execute("INSERT INTO pizza(nome, tipo, data_criacao, ingredientes, valor_custo) \
-                        values (:nome, :tipo, :datacriacao, :ingredientes, :valorcusto)", pizza)
-    connection.commit()
-    connection.close()
-    return print('          ***** Pizza  Adicionada *****')
 
-####################################################################################################################################################################################################################################################
-
-def Update(pizzaupdate, inativacao):
-    cursor, connection = tables.chamada_db('nao')
-    if inativacao == True:
-        cursor.execute("UPDATE pizza \
-                       set nome = ?, tipo = ?, ingredientes = ?, valor_custo = ?, data_inativacao = ? \
-                       where id_pizza = ?",
-                       (pizzaupdate[0], pizzaupdate[1], pizzaupdate[2], pizzaupdate[3], None, pizzaupdate[4]))
-    else:
-        cursor.execute("UPDATE pizza \
-                       set nome = ?, tipo = ?, ingredientes = ?, valor_custo = ? \
-                       where id_pizza = ?", (pizzaupdate[0], pizzaupdate[1], pizzaupdate[2], pizzaupdate[3], pizzaupdate[4]))
-
-    connection.commit()
-    connection.close()
-
-    print('\n          ***** Pizza Alterada *****')
-
-####################################################################################################################################################################################################################################################
-
-def Select(Tabela, Codigo):
-    cursor, connection = tables.chamada_db('nao')
-    if Tabela == 'Cliente':
-
-        cursor.execute("SELECT id_pizza, tipo, nome, ingredientes, valor_custo, data_inativacao from pizza where id_pizza = ?", (Codigo,) )
-
-        pizza = cursor.fetchone()  # retrieve the first row
-        connection.close()
-
-        return pizza
-
-    elif Tabela == 'Pizza':
-        cursor.execute("SELECT id_pizza, tipo, nome, ingredientes, valor_custo, data_criacao from pizza where data_inativacao is null")
+    if Tabela == 'Pizza':
+        cursor.execute("SELECT id_pizza, tipo, nome, valor_custo from pizza where data_inativacao is null")
         pizzas = cursor.fetchall()  # retrieve the first row
         if pizzas == None:
             connection.close()
@@ -66,7 +28,7 @@ def Select(Tabela, Codigo):
             connection.close()
             return pizzas
 
-    elif Tabela == 'Pedido':
-        pass
+def user_data(inicio, fim):
+    print('Ola')
 
 

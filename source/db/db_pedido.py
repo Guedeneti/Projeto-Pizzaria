@@ -5,22 +5,13 @@ Descricao...: Realizar Pequisa no banco de dados com passagem de parametos, mini
 Arquivo.....: db_pedido.py - Pesquisa padrão em tabelas no banco de dados
 Autor.......: Vinicius Guedes
 Observações.: 2020-05-10 - [R00] Criação do Arquivo - Versao 1.00
-              ...
-"""
-
-"""
-Data.Criacao: 2020-05-10
-Projeto.....: Projeto Pizzaria
-Descricao...: Realizar inserção no banco de dados com passagem de parametos, minimizando codigo.
-Arquivo.....: db_pizza.py - Inserção padrão em tabelas no banco de dados
-Autor.......: Mateus Pompermayer
-Observações.: 2020-05-10 - [R00] Criação do Arquivo - Versao 1.00
               2020-05-13 - [R00] Criação da funcao Insert - Versao 1.00
               2020-05-13 - [R00] Criação da funcao Update - Versao 1.00
               2020-05-13 - [R00] Criação da funcao Select - Versao 1.00
               2020-05-13 - [R00] Criação da funcao Delete - Versao 1.00
               ...
 """
+
 import os
 from source.db.database import tables
 from source.lib import library

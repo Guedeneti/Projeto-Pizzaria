@@ -9,8 +9,10 @@ Observações.: 2020-05-10 - [R00] Criação do Arquivo - Versao 1.00
               ...
 """
 
-from source.lib import library
 from source.db import db_report
+from source.db import db_pizza
+from source import user
+from source.db import db_user
 
 
 def Menu_Relatorio ():
@@ -19,7 +21,7 @@ def Menu_Relatorio ():
         try:
             print('\n****************** RELATORIOS ******************')
             print('   [1] - Cliente')
-            print('   [2] - Cliente Completo')
+            print('   [2] - Cliente Parametrizado')
             print('   [3] - Pedidos')
             print('   [4] - Pizza')
             print('   [5] - Pizza - Maior receita')
@@ -32,13 +34,13 @@ def Menu_Relatorio ():
             print("\n           ***** Valor Inválido *****")
         else:
             if opcao == 1:
-                ()
+                report_user('padrao')
             elif opcao == 2:
-                ()
+                report_user('parametro')
             elif opcao == 3:
                 ()
             elif opcao == 4:
-                ()
+                db_pizza.Select( 0, 'Todas', False)
             elif opcao == 5:
                 ReceitaPizza('Maior')
             elif opcao == 6:
@@ -46,46 +48,67 @@ def Menu_Relatorio ():
 
 
 def ReceitaPizza(Tamanho):
+    pizzas = db_report.Select('Pizza')
+
     if Tamanho == 'Maior':
-        size = 0
-        print('\nMaior Receita: ')
-        Pizzas = db_report.Select('Pizza', 0)
+        print('\n            ***** Maior  Receita ***** ')
 
-        if Pizzas != None:
-            for pizza in Pizzas:
-                if size < len(pizza[3]):
-                    size = len(pizza[3])
-                    MaiorReceita = (pizza[0], pizza[1], pizza[2], pizza[3], pizza[4], pizza[5])
+        if pizzas != None:
+            num = len(pizzas)
 
-            print('\nID.............: ', MaiorReceita[0])
-            print('Tipo...........: ', MaiorReceita[1])
-            print('Nome...........: ', MaiorReceita[2])
-            print('Ingredientes...: ', MaiorReceita[3])
-            print('Valor Custo....: R$', MaiorReceita[4])
-            print('Data Criacao...: ', MaiorReceita[5])
+            for i in range(num):
+                ref = float(pizzas[i][3].replace(',', '.'))
+                if i == 0:
+                    maior = ref
+                elif ref > maior:
+                    maior = ref
 
-        else:
-            print('Nenhuma Receita Encontrada!')
-    elif Tamanho == 'Menor':
-        print('\nMenor Receita: ')
-        Pizzas = db_report.Select('Pizza', 0)
-        size = len(Pizzas[0][3])
-        if Pizzas != None:
-            for pizza in Pizzas:
-                if size > len(pizza[3]):
-                    size = len(pizza[3])
-                    MaiorReceita = (pizza[0], pizza[1], pizza[2], pizza[3], pizza[4], pizza[5])
-
-            print('\nID.............: ', MaiorReceita[0])
-            print('Tipo...........: ', MaiorReceita[1])
-            print('Nome...........: ', MaiorReceita[2])
-            print('Ingredientes...: ', MaiorReceita[3])
-            print('Valor Custo....: R$', MaiorReceita[4])
-            print('Data Criacao...: ', MaiorReceita[5])
+            for i in range(num):
+                ref = float(pizzas[i][3].replace(',', '.'))
+                if ref == maior:
+                    print("\n     ID.......:", pizzas[i][0])
+                    print("     Nome.....:", pizzas[i][1])
+                    print("     Tipo.....:", pizzas[i][2])
+                    print("     Valor....:", ref)
 
         else:
             print('Nenhuma Receita Encontrada!')
 
-
     elif Tamanho == 'Menor':
-        print('Receita Menor')
+        print('\n            ***** Menor  Receita ***** ')
+
+        if pizzas != None:
+            num = len(pizzas)
+
+            for i in range(num):
+                ref = float(pizzas[i][3].replace(',', '.'))
+                if i == 0:
+                    menor = ref
+                elif ref < menor:
+                    menor = ref
+
+            for i in range(num):
+                ref = float(pizzas[i][3].replace(',', '.'))
+                if ref == menor:
+                    print("\n     ID.......:", pizzas[i][0])
+                    print("     Nome.....:", pizzas[i][1])
+                    print("     Tipo.....:", pizzas[i][2])
+                    print("     Valor....:", ref)
+
+        else:
+            print('Nenhuma Receita Encontrada!')
+
+def report_user(ref):
+    usuario = db_user.select(4, 'tudo')
+    if usuario == []:
+        print("\n     ***** Nenhum Cadastro Encontrado *****")
+    else:
+        if ref == "padrao":
+            for row in usuario:
+                user.Exibir_Select(row, 1)
+        elif ref == "parametro":
+            print("\n           ***** Buscando Cliente *****")
+            print("\nFormato de pesquisa YYYY-MM-DD")
+            inicio = input("     Data Inicio....: ")
+            fim = input("     Data Fim.......: ")
+            db_report.user_data(inicio, fim)

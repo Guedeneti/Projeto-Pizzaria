@@ -59,7 +59,8 @@ def create_table():
                             complemento varchar(15), \
                             bairro varchar(15), \
                             cidade varchar(15), \
-                            uf varchar(2) )')
+                            uf varchar(2), \
+                            data_criacao datetime)')
 
     # Criação da tabela pedido
     cursor.execute('CREATE TABLE IF NOT EXISTS pedido \

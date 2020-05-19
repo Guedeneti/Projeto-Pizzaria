@@ -80,7 +80,6 @@ def Insert():
                 pizza.append(valor)
                 value = False
 
-    print('\n ')
 
     db_pizza.Insert(pizza)
 

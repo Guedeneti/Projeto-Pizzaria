@@ -55,7 +55,8 @@ def Insert ():
                 input('    Complemento....: '),
                 input('    Bairro.........: '),
                 input('    Cidade.........: '),
-                input('    UF.............: '))]
+                input('    UF.............: '),
+                library.Datetime_fmt('YYYY-MM-DD'))]
 
     ID = db_user.insert(usuario)
     print('\n         ***** Usuario adicionado *****')
@@ -83,52 +84,56 @@ def Update ():
             if user == []:
                 print("\n     ***** Nenhum Cadastro Encontrado *****")
             else:
-                if opcao == 1:
-                    ref = eval(input('\n     ID Cliente..: '))
-                    user = db_user.select(1, ref)
+                if opcao != 0:
+                    if opcao == 1:
+                        ref = eval(input('\n     ID Cliente..: '))
+                        user = db_user.select(1, ref)
 
-                elif opcao == 2:
-                    ref = eval(input('\n     Telefone Fixo..: '))
-                    user = db_user.select(2, ref)
+                    elif opcao == 2:
+                        ref = eval(input('\n     Telefone Fixo..: '))
+                        user = db_user.select(2, ref)
 
-                elif opcao == 3:
-                    ref = eval(input('\n     Telefone Celular..: '))
-                    user = db_user.select(3, ref)
+                    elif opcao == 3:
+                        ref = eval(input('\n     Telefone Celular..: '))
+                        user = db_user.select(3, ref)
 
-                print("            ***** Dados  Atuais *****")
-                Exibir_Select(user, 1)
-
-                opcao = 1
-                while opcao != 2:
-                    try:
-                        print('   [1] - Sim')
-                        print('   [2] - Nao')
-                        opcao = int(input("Deseja alterar esse usuario?: "))
-                        if not 0 <= opcao <= 3:
-                            raise ValueError("\n           ***** Valor Inválido *****")
-                    except ValueError as e:
-                        print("\n           ***** Valor Inválido *****")
+                    if user == None or user == []:
+                        print("\n     ***** Nenhum Cadastro Encontrado *****")
                     else:
-                        if opcao == 1:
-                            print('    ID.............:', user[0])
-                            usuario = [(input('    Nome...........: '),
-                                        input('    Telefone Fixo..: '),
-                                        input('    Telefone Cel...: '),
-                                        input('    CEP............: '),
-                                        input('    Endereço.......: '),
-                                        input('    Numero.........: '),
-                                        input('    Complemento....: '),
-                                        input('    Bairro.........: '),
-                                        input('    Cidade.........: '),
-                                        input('    UF.............: '),
-                                        user[0])]
+                        print("\n            ***** Dados  Atuais *****\n")
+                        Exibir_Select(user, 1)
 
-                            db_user.update(usuario)
-                            print('\n          ***** Usuario Alterado *****')
-                            opcao = 2
-                        elif opcao == 2:
-                            pass
-                opcao=0
+                        opcao = 1
+                        while opcao != 2:
+                            try:
+                                print('   [1] - Sim')
+                                print('   [2] - Nao')
+                                opcao = int(input("Deseja alterar esse usuario?: "))
+                                if not 0 <= opcao <= 3:
+                                    raise ValueError("\n           ***** Valor Inválido *****")
+                            except ValueError as e:
+                                print("\n           ***** Valor Inválido *****")
+                            else:
+                                if opcao == 1:
+                                    print('    ID.............:', user[0])
+                                    usuario = [(input('    Nome...........: '),
+                                                input('    Telefone Fixo..: '),
+                                                input('    Telefone Cel...: '),
+                                                input('    CEP............: '),
+                                                input('    Endereço.......: '),
+                                                input('    Numero.........: '),
+                                                input('    Complemento....: '),
+                                                input('    Bairro.........: '),
+                                                input('    Cidade.........: '),
+                                                input('    UF.............: '),
+                                                user[0])]
+
+                                    db_user.update(usuario)
+                                    print('\n          ***** Usuario Alterado *****')
+                                    opcao = 2
+                                elif opcao == 2:
+                                    pass
+                        opcao=0
 
 ############################################################################################################################################################################
 
@@ -184,6 +189,7 @@ def Exibir_Select(user,tipo):
             print('     Bairro........: ', user[8])
             print('     Cidade........: ', user[9])
             print('     UF............: ', user[10])
+            print('     Criado em.....: ', user[11])
             print('\n')
         else:
             print("     ***** Nenhum Cadastro Encontrado *****")
@@ -212,37 +218,39 @@ def Delete ():
             if user == []:
                 print("\n     ***** Nenhum Cadastro Encontrado *****")
             else:
-                if opcao == 1:
-                    ref = eval(input('\n     ID Cliente..: '))
-                    user = db_user.select(1, ref)
+                if opcao != 0:
+                    if opcao == 1:
+                        ref = eval(input('\n     ID Cliente..: '))
+                        user = db_user.select(1, ref)
 
-                elif opcao == 2:
-                    print('Conexão com o banco')
-                    ref = eval(input('\n     Telefone Fixo..: '))
-                    user = db_user.select(2, ref)
+                    elif opcao == 2:
+                        ref = eval(input('\n     Telefone Fixo..: '))
+                        user = db_user.select(2, ref)
 
-                elif opcao == 3:
-                    print('Conexão com o banco')
-                    ref = eval(input('\n     Telefone Celular..: '))
-                    user = db_user.select(3, ref)
+                    elif opcao == 3:
+                        ref = eval(input('\n     Telefone Celular..: '))
+                        user = db_user.select(3, ref)
 
-                print("            ***** Dados  Atuais *****")
-                Exibir_Select(user, 1)
-
-                opcao = 1
-                while opcao != 2:
-                    try:
-                        print('   [1] - Sim')
-                        print('   [2] - Nao')
-                        opcao = int(input("Deseja excluir esse usuario?: "))
-                        if not 0 <= opcao <= 3:
-                            raise ValueError("\n           ***** Valor Inválido *****")
-                    except ValueError as e:
-                        print("\n           ***** Valor Inválido *****")
+                    if user == None or user == []:
+                        print("\n     ***** Nenhum Cadastro Encontrado *****")
                     else:
-                        if opcao == 1:
-                            db_user.delete(user[0])
-                            opcao = 2
-                        elif opcao == 2:
-                            pass
-                opcao = 0
+                        print("\n            ***** Dados  Atuais *****\n")
+                        Exibir_Select(user, 1)
+
+                        opcao = 1
+                        while opcao != 2:
+                            try:
+                                print('   [1] - Sim')
+                                print('   [2] - Nao')
+                                opcao = int(input("Deseja excluir esse usuario?: "))
+                                if not 0 <= opcao <= 3:
+                                    raise ValueError("\n           ***** Valor Inválido *****")
+                            except ValueError as e:
+                                print("\n           ***** Valor Inválido *****")
+                            else:
+                                if opcao == 1:
+                                    db_user.delete(user[0])
+                                    opcao = 2
+                                elif opcao == 2:
+                                    pass
+                        opcao = 0
