@@ -72,10 +72,14 @@ def Achar_Id():
 
     cursor.execute("SELECT id_user from user")
     user = cursor.fetchall()
-    if user == None:
+    if user == None or user == []:
         cursor.execute("DELETE FROM SQLITE_SEQUENCE where name = 'user'")
         connection.commit()
-        user = 1
+        chave = 1
+    else:
+        chave = user[len(user) - 1][0] + 1
+
     connection.close()
-    return len(user) + 1
+
+    return chave
 

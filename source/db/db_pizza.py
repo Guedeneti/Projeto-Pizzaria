@@ -60,25 +60,25 @@ def Select(PizzaCodigo, bool, select):
         if bool == 'Uma':
             cursor.execute("SELECT id_pizza, tipo, nome, ingredientes, valor_custo, data_criacao from pizza where id_pizza = ? and data_inativacao is null", (PizzaCodigo,) )
             pizza = cursor.fetchone()  # retrieve the first row
-            print('\nPizza Selecionada..:', pizza[2])
             if pizza == None:
                 connection.close()
                 return print('\n      ***** Nenhuma pizza encontrada *****')
             else:
+                print('\n      Pizza Selecionada..:', pizza[2])
                 connection.close()
-                return print('      Id............:', pizza[0], '\n' , '     Tipo..........:', pizza[1], '\n', '     Nome..........:', pizza[2], '\n', '     Ingredientes...:', pizza[3],
+                return print('\n      Id............:', pizza[0], '\n' , '     Tipo..........:', pizza[1], '\n', '     Nome..........:', pizza[2], '\n', '     Ingredientes..:', pizza[3],
                           '\n', '     Valor Custo...: R$', pizza[4], '\n', '     Data Criação..:', pizza[5])  # Imprime o primeiro campo
         elif bool == 'Todas':
             cursor.execute("SELECT id_pizza, tipo, nome, ingredientes, valor_custo, data_criacao from pizza where data_inativacao is null")
             pizzas = cursor.fetchall()  # retrieve the first row
 
-            print('\n           ***** Todas Pizzas *****\n')
+            print('\n             ***** Todas Pizzas *****\n')
             if pizzas == None:
                 connection.close()
                 return print('\n      ***** Nenhuma pizza encontrada *****')
             else:
                 for pizza in pizzas:
-                 pizzas = [print('      Id............:', pizza[0], '\n' , '     Tipo..........:', pizza[1], '\n', '     Nome..........:', pizza[2], '\n', '     Ingredientes...:', pizza[3],
+                 pizzas = [print('      Id............:', pizza[0], '\n' , '     Tipo..........:', pizza[1], '\n', '     Nome..........:', pizza[2], '\n', '     Ingredientes..:', pizza[3],
                           '\n', '     Valor Custo...: R$', pizza[4], '\n', '     Data Criação..:', pizza[5])]
                  print('\n')
                 connection.close()

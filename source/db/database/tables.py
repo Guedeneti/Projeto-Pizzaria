@@ -17,7 +17,7 @@ from source.db import db_pizza
 
 def chamada_db(new):
     # definindo um arquivo
-    fileDB = 'C:\\Users\\vinip\\Documents\\Facul\\3SEM\\Saito\\Pyton\\ProjetoPizzaria\\source\\db\\database\\db_pizzaria.sqlite'
+    fileDB = 'C:\\Users\\vinip\\Documents\\Facul\\3SEM\\Saito\\Pyton\\Projeto_Pizzaria\\source\\db\\database\\db_pizzaria.sqlite'
 
     # verificando se arquivo de banco de dados existe
     if not os.path.exists(fileDB) and new != 'new':
@@ -69,7 +69,8 @@ def create_table():
                                data_inicio date, \
                                hora datetime, \
                                troco_pedido decimal(10,2), \
-                               total_pedido decimal(10,2) )')
+                               total_pedido decimal(10,2), \
+                               status boolean)')
 
     cursor.execute('CREATE TABLE IF NOT EXISTS inf_pedido \
                                   (id_item INTEGER PRIMARY KEY AUTOINCREMENT, \
@@ -85,4 +86,3 @@ def create_table():
 
     db_pizza.create_db_pizza()
     connection.close()
-

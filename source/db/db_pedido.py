@@ -123,6 +123,120 @@ def Select(Ref, Pesq):
             connection.close()
             return hora
 
+    elif Pesq == 'Pedido':
+        if Ref == 'Todos':
+            cursor, connection = tables.chamada_db('nao')
+            cursor.execute("SELECT inf_pedido.pizza, inf_pedido.tamanho, inf_pedido.qtd, pedido.id_pedido, pedido.data_inicio, pedido.hora, pedido.total_pedido, pedido.troco_pedido, \
+                                    user.nome, user.tel_fix, Inteira.nome, MeiaUm.nome, MeiaDois.nome  FROM pedido \
+                                    LEFT JOIN inf_pedido ON pedido.id_pedido = inf_pedido.id_pedido \
+                                    LEFT JOIN user ON pedido.id_user = user.id_user \
+                                    LEFT JOIN pizza AS Inteira ON inf_pedido.id_pizza_inteira = Inteira.id_pizza \
+                                    LEFT JOIN pizza AS MeiaUm ON inf_pedido.id_pizza_meia_um = MeiaUm.id_pizza \
+                                    LEFT JOIN pizza AS MeiaDois ON inf_pedido.id_pizza_meia_dois = MeiaDois.id_pizza")
+            pedidos = cursor.fetchall()  # retrieve the first row
+
+            if pedidos == None:
+                connection.close()
+                return print("\n   *** Nenhum pedido encontrado ***")
+            else:
+                print("\n")
+                for pedido in pedidos:
+                    if pedido[0] == 'Meia':
+                        pedidos = [
+                            print('      Id Pedido....:', pedido[3], '\n', '     Data.........:', pedido[4], '\n',
+                                  '     Hora Entrega.:', pedido[5], '\n', '     Total........: R$', pedido[6],
+                                  '\n', '     Troco........: R$', pedido[7], '\n', '     Cliente......:', pedido[8],
+                                  '\n',
+                                  '     Telefone.....:', pedido[9], '\n', '     Pizza........:', pedido[0],
+                                  '\n', '     Tamanho......:', pedido[1], '\n', '     Quantidade...:', pedido[2], '\n',
+                                  '     Meia 1/2.....:', pedido[11], '\n', '     Meia 2/2.....:', pedido[12])]
+
+                    elif pedido[0] == 'Inteira':
+                        pedidos = [
+                            print('      Id Pedido....:', pedido[3], '\n', '     Data.........:', pedido[4], '\n',
+                                  '     Hora Entrega.:', pedido[5], '\n', '     Total........: R$', pedido[6],
+                                  '\n', '     Troco........: R$', pedido[7], '\n', '     Cliente......:', pedido[8],
+                                  '\n',
+                                  '     Telefone.....:', pedido[9], '\n', '     Pizza........:', pedido[0],
+                                  '\n', '     Tamanho......:', pedido[1], '\n', '     Quantidade...:', pedido[2], '\n',
+                                  '     Inteira......:', pedido[10], '\n')]
+
+                    print('\n')
+                connection.close()
+                return pedidos
+        else:
+            cursor, connection = tables.chamada_db('nao')
+            cursor.execute("SELECT inf_pedido.pizza, inf_pedido.tamanho, inf_pedido.qtd, pedido.id_pedido, pedido.data_inicio, pedido.hora, pedido.total_pedido, pedido.troco_pedido, \
+                            user.nome, user.tel_fix, Inteira.nome, MeiaUm.nome, MeiaDois.nome  FROM pedido \
+                            LEFT JOIN inf_pedido ON pedido.id_pedido = inf_pedido.id_pedido \
+                            LEFT JOIN user ON pedido.id_user = user.id_user \
+                            LEFT JOIN pizza AS Inteira ON inf_pedido.id_pizza_inteira = Inteira.id_pizza \
+                            LEFT JOIN pizza AS MeiaUm ON inf_pedido.id_pizza_meia_um = MeiaUm.id_pizza \
+                            LEFT JOIN pizza AS MeiaDois ON inf_pedido.id_pizza_meia_dois = MeiaDois.id_pizza \
+                            WHERE pedido.id_pedido = :pedido", (Ref,))
+            pedidos = cursor.fetchall()  # retrieve the first row
+
+            if pedidos == None:
+                connection.close()
+                return print("\n   *** Nenhum pedido encontrado ***")
+            else:
+                print("\n")
+                for pedido in pedidos:
+                    if pedido[0] == 'Meia':
+                        pedidos = [print('      Id Pedido....:', pedido[3], '\n', '     Data.........:', pedido[4], '\n',
+                                        '     Hora Entrega.:', pedido[5], '\n', '     Total........: R$', pedido[6],
+                                        '\n', '     Troco........: R$', pedido[7], '\n', '     Cliente......:', pedido[8],'\n',
+                                        '     Telefone.....:', pedido[9], '\n', '     Pizza........:', pedido[0],
+                                        '\n', '     Tamanho......:', pedido[1],'\n', '     Quantidade...:', pedido[2], '\n',
+                                        '     Meia 1/2.....:', pedido[11], '\n', '     Meia 2/2.....:', pedido[12])]
+
+                    elif pedido[0] == 'Inteira':
+                        pedidos = [print('      Id Pedido....:', pedido[3], '\n', '     Data.........:', pedido[4], '\n',
+                                        '     Hora Entrega.:', pedido[5], '\n', '     Total........: R$', pedido[6],
+                                        '\n', '     Troco........: R$', pedido[7], '\n', '     Cliente......:', pedido[8],'\n',
+                                        '     Telefone.....:', pedido[9], '\n', '     Pizza........:', pedido[0],
+                                        '\n', '     Tamanho......:', pedido[1],'\n', '     Quantidade...:', pedido[2], '\n',
+                                        '     Inteira......:', pedido[10], '\n')]
+
+                    print('\n')
+                connection.close()
+                return pedidos
+
+    elif Pesq == 'Delete':
+        cursor, connection = tables.chamada_db('nao')
+        cursor.execute("SELECT inf_pedido.pizza, inf_pedido.tamanho, inf_pedido.qtd, pedido.id_pedido, pedido.data_inicio, pedido.hora, pedido.total_pedido, pedido.troco_pedido, \
+                        user.nome, user.tel_fix, Inteira.nome, MeiaUm.nome, MeiaDois.nome  FROM pedido \
+                        LEFT JOIN inf_pedido ON pedido.id_pedido = inf_pedido.id_pedido \
+                        LEFT JOIN user ON pedido.id_user = user.id_user \
+                        LEFT JOIN pizza AS Inteira ON inf_pedido.id_pizza_inteira = Inteira.id_pizza \
+                        LEFT JOIN pizza AS MeiaUm ON inf_pedido.id_pizza_meia_um = MeiaUm.id_pizza \
+                        LEFT JOIN pizza AS MeiaDois ON inf_pedido.id_pizza_meia_dois = MeiaDois.id_pizza \
+                        WHERE pedido.id_pedido = :pedido", (Ref,))
+        pedidos = cursor.fetchall()  # retrieve the first row
+        if pedidos == None:
+            connection.close()
+            return print("\n   *** Nenhum pedido encontrado ***")
+        else:
+            print("\n")
+            for pedido in pedidos:
+                if pedido[0] == 'Meia':
+                    pedidosselect = [print('      Id Pedido....:', pedido[3], '\n', '     Data.........:', pedido[4], '\n',
+                                    '     Hora Entrega.:', pedido[5], '\n', '     Total........: R$', pedido[6],
+                                    '\n', '     Troco........: R$', pedido[7], '\n', '     Cliente......:', pedido[8],'\n',
+                                    '     Telefone.....:', pedido[9], '\n', '     Pizza........:', pedido[0],
+                                    '\n', '     Tamanho......:', pedido[1],'\n', '     Quantidade...:', pedido[2], '\n',
+                                    '     Meia 1/2.....:', pedido[11], '\n', '     Meia 2/2.....:', pedido[12])]
+                elif pedido[0] == 'Inteira':
+                    pedidosselect = [print('      Id Pedido....:', pedido[3], '\n', '     Data.........:', pedido[4], '\n',
+                                    '     Hora Entrega.:', pedido[5], '\n', '     Total........: R$', pedido[6],
+                                    '\n', '     Troco........: R$', pedido[7], '\n', '     Cliente......:', pedido[8],'\n',
+                                    '     Telefone.....:', pedido[9], '\n', '     Pizza........:', pedido[0],
+                                    '\n', '     Tamanho......:', pedido[1],'\n', '     Quantidade...:', pedido[2], '\n',
+                                    '     Inteira......:', pedido[10], '\n')]
+                print('\n')
+            connection.close()
+            return pedidos
+
 ##################################################################################################################################################################################################################################################
 
 def Update( Table, ref, ID_Pedido):
@@ -155,3 +269,13 @@ def Update( Table, ref, ID_Pedido):
 
 ##################################################################################################################################################################################################################################################
 
+def Delete(Ref):
+    cursor, connection = tables.chamada_db('nao')
+    cursor.execute("DELETE FROM pedido \
+                    WHERE id_pedido = :pedido", (Ref,))
+
+    cursor.execute("DELETE FROM inf_pedido \
+                        WHERE id_pedido = :pedido", (Ref,))
+    connection.commit()
+    connection.close()
+    return print('\n          ***** Pedido Excluido *****')

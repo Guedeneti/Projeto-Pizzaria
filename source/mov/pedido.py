@@ -13,26 +13,127 @@ from source.lib import library
 from source.db import db_pedido
 from source import user
 
-def Abrir ():
-    opcao = 1
-    while opcao != 0:
-        try:
-            print('\n******************* PEDIDOS *******************')
-            print('   [1] - Fazer Pedido')
-            print('   [0] - Voltar')
-            opcao = int(input('Digite a opção desejada: '))
-            if not 0 <= opcao <= 1:
-                raise ValueError("\n           ***** Valor Inválido *****")
-        except ValueError as e:
-            print("\n           ***** Valor Inválido *****")
-        else:
-            if opcao == 1:
-                Fazer_Pedido(True, None)
-                opcao = 0
+def Abrir (Table):
+    if Table == 0:
+        opcao = 1
+        while opcao != 0:
+            try:
+                print('\n******************* PEDIDOS ********************')
+                print('   [1] - Fazer Pedido')
+                print('   [0] - Voltar')
+                opcao = int(input('Digite a opção desejada: '))
+                if not 0 <= opcao <= 1:
+                    raise ValueError("\n           ***** Valor Inválido *****")
+            except ValueError as e:
+                print("\n           ***** Valor Inválido *****")
+            else:
+                if opcao == 1:
+                    Fazer_Pedido(True, None)
+                    opcao = 0
+    elif Table == 1:
+        opcao = 1
+        while opcao != 0:
+            try:
+                print('\n******************* PEDIDOS ********************')
+                print('   [1] - Consultar')
+                print('   [2] - Excluir')
+                print('   [0] - Voltar')
+                opcao = int(input('Digite a opção desejada: '))
+                if not 0 <= opcao <= 2:
+                    raise ValueError("\n           ***** Valor Inválido *****")
+            except ValueError as e:
+                print("\n           ***** Valor Inválido *****")
+            else:
+                if opcao == 1:
+                    Abertos('Consultar')
+                    opcao = 0
+                elif opcao == 2:
+                    Abertos('Excluir')
+                    opcao = 0
 
-def Abertos():
-    print('\n Pedidos Abertos')
-    library.Pause()
+##########################################################################################################################################################################################################################################
+
+def Abertos(Type):
+    print('\n           ***** Pedidos Abertos *****')
+    if Type == 'Consultar':
+        Select = True
+        while Select:
+            try:
+                print('\n   [1] - Um Pedido')
+                print('   [2] - Todos Pedidos')
+                print('   [0] - Voltar')
+                opcaoselect = int(input("Digite a opção desejada: "))
+                if not 0 <= opcaoselect <= 2:
+                    raise ValueError("\n           ***** Valor Inválido *****")
+            except ValueError as e:
+                print("\n           ***** Valor Inválido *****")
+
+            else:
+                if opcaoselect in range(0, 3):
+                    if (opcaoselect == 1):
+                        Codigo = True
+                        while Codigo:
+                            try:
+                                PedidoCodigo = int(input('\n    Digite o Codigo do Pedido...........: '))
+                            except:
+                                print("\n           ***** Valor Inválido *****")
+                            else:
+                                db_pedido.Select(PedidoCodigo, 'Pedido')
+                                Codigo = False
+                                Select = False
+                    elif (opcaoselect == 2):
+                        db_pedido.Select('Todos', 'Pedido')
+                        Select = False
+                    elif (opcaoselect == 0):
+                        Select = False
+    elif Type == 'Excluir':
+        Delete = True
+        while Delete:
+            try:
+                print('\n   [1] - Excluir')
+                print('   [0] - Cancelar')
+                opcaodelete = int(input("Digite a opção desejada: "))
+                if not 0 <= opcaodelete <= 1:
+                    raise ValueError("\n           ***** Valor Inválido *****")
+            except ValueError as e:
+                print("\n           ***** Valor Inválido *****")
+
+            else:
+                if opcaodelete in range(0, 2):
+                    if (opcaodelete == 1):
+                        Codigo = True
+                        while Codigo:
+                            try:
+                                PedidoCodigo = int(input('\n    Digite o Codigo do Pedido...........: '))
+                            except:
+                                print("\n           ***** Valor Inválido *****")
+                            else:
+                                pedido = db_pedido.Select(PedidoCodigo, 'Delete')
+                                Codigo = False
+                                Delete = False
+                                delete = True
+                                while delete:
+                                    try:
+                                        print('\n   [1] - Excluir')
+                                        print('   [0] - Cancelar')
+                                        opcaodelete = int(input("Digite a opção desejada: "))
+                                        if not 0 <= opcaodelete <= 1:
+                                            raise ValueError("\n           ***** Valor Inválido *****")
+                                    except ValueError as e:
+                                        print("\n           ***** Valor Inválido *****")
+
+                                    else:
+                                        if opcaodelete in range(0, 2):
+                                            if (opcaodelete == 1):
+                                                db_pedido.Delete(pedido[0][3])
+                                                delete = False
+                                            else:
+                                                print('\n              ***** Cancelado *****')
+                                                delete = False
+                    else:
+                        print('\n              ***** Cancelado *****')
+                        Delete = False
+##########################################################################################################################################################################################################################################
 
 def Fazer_Pedido( New, id_pedido):
     if New == True:
@@ -45,16 +146,16 @@ def Fazer_Pedido( New, id_pedido):
                 print("\n           ***** Valor Inválido *****")
             else:
                 cliente, pizzas = db_pedido.Select(tel, 'Cliente')
-                Tel = False
                 if cliente != None:
                     ID_User = cliente[0]
-                    if pizzas[0][0] != None:
-                        if pizzas[0][13] == 2 and pizzas[0][13] == 3:
-                            print(f"\nUltimas {pizzas[0][13]} Pizzas Pedidas:")
+                    Name_User = cliente[1]
+                    if pizzas != None:
+                        if pizzas[0][13] == 2 or pizzas[0][13] == 3:
+                            print(f"\nUltimas {pizzas[0][13]} Pizzas Pedidas do(a) {Name_User}:")
                         elif pizzas[0][13] > 3:
-                            print(f"\nUltimas 3 Pizzas Pedidas:")
+                            print(f"\nUltimas 3 Pizzas Pedidas do(a) {Name_User}:")
                         elif pizzas[0][13] == 1:
-                            print(f"\nUltima Pizza Pedida:")
+                            print(f"\nUltima Pizza Pedida do(a) {Name_User}:")
 
                         for pizza in pizzas:
                             if pizza[0] != None:
@@ -86,11 +187,56 @@ def Fazer_Pedido( New, id_pedido):
                                         print('     Tipo 1/2......: ', pizza[7])
                                         print('     Tipo 2/2......: ', pizza[11])
                                         print('     Valor Custo...: R$', pizza[12])
+                        User = True
+                        while User:
+                            try:
+                                print('\n   [1] - Pesquisar novamente')
+                                print('   [0] - Cadastrar Pedido')
+                                opcao = int(input("Escolha uma opcao: "))
+                                if not 0 <= opcao <= 1:
+                                    raise ValueError("\n           ***** Valor Inválido *****")
+                            except ValueError as e:
+                                print("\n           ***** Valor Inválido *****")
+                            else:
+                                if opcao in range(0, 2):
+                                    User = False
+                                    if opcao == 0:
+                                        Tel = False
                     else:
-                        print("\n           ***** Sem  Historico *****")
+                        print(f"\n     ***** Sem  Historico do(a) {Name_User} *****")
+                        User = True
+                        while User:
+                            try:
+                                print('\n   [1] - Pesquisar novamente')
+                                print('   [0] - Cadastrar Pedido')
+                                opcao = int(input("Escolha uma opcao: "))
+                                if not 0 <= opcao <= 1:
+                                    raise ValueError("\n           ***** Valor Inválido *****")
+                            except ValueError as e:
+                                print("\n           ***** Valor Inválido *****")
+                            else:
+                                if opcao in range(0, 2):
+                                    User = False
+                                    if opcao == 0:
+                                        Tel = False
                 else:
                     print('\n     ***** Nenhum Cadastro Encontrado *****')
-                    ID_User = user.Insert()
+                    User = True
+                    while User:
+                        try:
+                            print('\n   [1] - Pesquisar novamente')
+                            print('   [0] - Cadastrar Cliente')
+                            opcao = int(input("Escolha uma opcao: "))
+                            if not 0 <= opcao <= 1:
+                                raise ValueError("\n           ***** Valor Inválido *****")
+                        except ValueError as e:
+                            print("\n           ***** Valor Inválido *****")
+                        else:
+                            if opcao in range(0, 2):
+                                User = False
+                                if opcao == 0:
+                                    Tel = False
+                                    ID_User = user.Insert()
 
         pedido = [ID_User]
         pedido.append(library.Datetime_fmt('YYYY-MM-DD'))
@@ -273,7 +419,7 @@ def Fazer_Pedido( New, id_pedido):
 
                                         else:
                                             if valortroco.replace(',','',1).isdigit():
-                                                if (float(valortroco.replace(',', '.')) > float(Total_Pedido.replace(',', '.'))):
+                                                if (float(valortroco.replace(',', '.')) >= float(Total_Pedido.replace(',', '.'))):
                                                     Precisa = False
                                                     db_pedido.Update('Total', Total_Pedido, ID_Pedido)
                                                     valortroco = library.Valores_Pedido('Troco', ID_Pedido, valortroco)
@@ -295,3 +441,5 @@ def Fazer_Pedido( New, id_pedido):
                                     print('\nPrevisao para Entrega: ', PrevisaoEntrega[0][0])
 
                                     print('\n          ***** Pedido Realizado *****')
+
+##########################################################################################################################################################################################################################################

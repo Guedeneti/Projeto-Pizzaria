@@ -178,7 +178,7 @@ def Select ():
 def Exibir_Select(user,tipo):
     if tipo == 1:
         if not user == None:
-            print('     Id............: ', user[0])
+            print('\n     Id............: ', user[0])
             print('     Nome..........: ', user[1])
             print('     Telefone Fixo.: ', user[2])
             print('     Telefone Cel..: ', user[3])

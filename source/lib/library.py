@@ -70,9 +70,9 @@ def Menu_Inicial():
             print("\n           ***** Valor Inválido *****")
         else:
             if opcao == 1:
-                pedido.Abrir()
+                pedido.Abrir(0)
             elif opcao == 2:
-                pedido.Abertos()
+                pedido.Abrir(1)
             elif opcao == 3:
                 Menu_Movimentacao()
             elif opcao == 4:

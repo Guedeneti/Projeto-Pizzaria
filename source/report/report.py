@@ -111,4 +111,11 @@ def report_user(ref):
             print("\nFormato de pesquisa YYYY-MM-DD")
             inicio = input("     Data Inicio....: ")
             fim = input("     Data Fim.......: ")
-            db_report.user_data(inicio, fim)
+
+            usuario = db_report.user_data(inicio, fim)
+
+            if usuario == None or usuario == []:
+                print("\n     ***** Nenhum Cadastro Encontrado *****")
+            else:
+                for i in usuario:
+                    user.Exibir_Select(i, 1)

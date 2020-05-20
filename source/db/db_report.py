@@ -29,6 +29,11 @@ def Select(Tabela):
             return pizzas
 
 def user_data(inicio, fim):
-    print('Ola')
+    cursor, connection = tables.chamada_db('nao')
+
+    cursor.execute("SELECT * from user where data_criacao >= ? and data_criacao <= ?", (inicio, fim))
+    user = cursor.fetchall()
+
+    return user
 
 
