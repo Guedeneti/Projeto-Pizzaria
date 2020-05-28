@@ -3,7 +3,7 @@ Data.Criacao: 2020-05-010
 Projeto.....: Projeto Pizzaria
 Descricao...: Realizar Pequisa no banco de dados com passagem de parametos, minimizando codigo.
 Arquivo.....: db_pedido.py - Pesquisa padrão em tabelas no banco de dados
-Autor.......: Vinicius Guedes
+Autor.......: Mateus Pompermayer
 Observações.: 2020-05-10 - [R00] Criação do Arquivo - Versao 1.00
               2020-05-13 - [R00] Criação da funcao Insert - Versao 1.00
               2020-05-13 - [R00] Criação da funcao Update - Versao 1.00
@@ -16,12 +16,12 @@ import os
 from source.db.database import tables
 from source.lib import library
 
-
+#Funcao para inserir pedido
 def Insert(Table, Dados):
     if Table == 'Pedido':
         cursor, connection = tables.chamada_db('nao')
-        cursor.execute("INSERT INTO pedido(id_user, data_inicio, hora) \
-                            values (:id_user, :data_inicio, :hora)", Dados)
+        cursor.execute("INSERT INTO pedido(id_user, data_inicio, hora, Status) \
+                            values (:id_user, :data_inicio, :hora, True)", Dados)
         connection.commit()
 
         cursor.execute("SELECT * FROM pedido ORDER BY id_pedido DESC LIMIT 1")
@@ -49,6 +49,7 @@ def Insert(Table, Dados):
 
 ####################################################################################################################################################################################################################################################
 
+#Funcao para mostrar dados do pedido
 def Select(Ref, Pesq):
     if Pesq == 'Cliente':
         cursor, connection = tables.chamada_db('nao')
@@ -132,12 +133,13 @@ def Select(Ref, Pesq):
                                     LEFT JOIN user ON pedido.id_user = user.id_user \
                                     LEFT JOIN pizza AS Inteira ON inf_pedido.id_pizza_inteira = Inteira.id_pizza \
                                     LEFT JOIN pizza AS MeiaUm ON inf_pedido.id_pizza_meia_um = MeiaUm.id_pizza \
-                                    LEFT JOIN pizza AS MeiaDois ON inf_pedido.id_pizza_meia_dois = MeiaDois.id_pizza")
+                                    LEFT JOIN pizza AS MeiaDois ON inf_pedido.id_pizza_meia_dois = MeiaDois.id_pizza \
+                                    WHERE pedido.Status = True ")
             pedidos = cursor.fetchall()  # retrieve the first row
 
-            if pedidos == None:
+            if pedidos == []:
                 connection.close()
-                return print("\n   *** Nenhum pedido encontrado ***")
+                return print("\n       **** Nenhum pedido encontrado ****")
             else:
                 print("\n")
                 for pedido in pedidos:
@@ -173,30 +175,30 @@ def Select(Ref, Pesq):
                             LEFT JOIN pizza AS Inteira ON inf_pedido.id_pizza_inteira = Inteira.id_pizza \
                             LEFT JOIN pizza AS MeiaUm ON inf_pedido.id_pizza_meia_um = MeiaUm.id_pizza \
                             LEFT JOIN pizza AS MeiaDois ON inf_pedido.id_pizza_meia_dois = MeiaDois.id_pizza \
-                            WHERE pedido.id_pedido = :pedido", (Ref,))
+                            WHERE pedido.id_pedido = :pedido AND pedido.Status = True ", (Ref,))
             pedidos = cursor.fetchall()  # retrieve the first row
 
-            if pedidos == None:
+            if pedidos == []:
                 connection.close()
-                return print("\n   *** Nenhum pedido encontrado ***")
+                return print("\n       **** Nenhum pedido encontrado ****")
             else:
                 print("\n")
                 for pedido in pedidos:
                     if pedido[0] == 'Meia':
-                        pedidos = [print('      Id Pedido....:', pedido[3], '\n', '     Data.........:', pedido[4], '\n',
+                        print('      Id Pedido....:', pedido[3], '\n', '     Data.........:', pedido[4], '\n',
                                         '     Hora Entrega.:', pedido[5], '\n', '     Total........: R$', pedido[6],
                                         '\n', '     Troco........: R$', pedido[7], '\n', '     Cliente......:', pedido[8],'\n',
                                         '     Telefone.....:', pedido[9], '\n', '     Pizza........:', pedido[0],
                                         '\n', '     Tamanho......:', pedido[1],'\n', '     Quantidade...:', pedido[2], '\n',
-                                        '     Meia 1/2.....:', pedido[11], '\n', '     Meia 2/2.....:', pedido[12])]
+                                        '     Meia 1/2.....:', pedido[11], '\n', '     Meia 2/2.....:', pedido[12])
 
                     elif pedido[0] == 'Inteira':
-                        pedidos = [print('      Id Pedido....:', pedido[3], '\n', '     Data.........:', pedido[4], '\n',
+                        print('      Id Pedido....:', pedido[3], '\n', '     Data.........:', pedido[4], '\n',
                                         '     Hora Entrega.:', pedido[5], '\n', '     Total........: R$', pedido[6],
                                         '\n', '     Troco........: R$', pedido[7], '\n', '     Cliente......:', pedido[8],'\n',
                                         '     Telefone.....:', pedido[9], '\n', '     Pizza........:', pedido[0],
                                         '\n', '     Tamanho......:', pedido[1],'\n', '     Quantidade...:', pedido[2], '\n',
-                                        '     Inteira......:', pedido[10], '\n')]
+                                        '     Inteira......:', pedido[10], '\n')
 
                     print('\n')
                 connection.close()
@@ -213,9 +215,9 @@ def Select(Ref, Pesq):
                         LEFT JOIN pizza AS MeiaDois ON inf_pedido.id_pizza_meia_dois = MeiaDois.id_pizza \
                         WHERE pedido.id_pedido = :pedido", (Ref,))
         pedidos = cursor.fetchall()  # retrieve the first row
-        if pedidos == None:
+        if pedidos == []:
             connection.close()
-            return print("\n   *** Nenhum pedido encontrado ***")
+            return print("\n       **** Nenhum pedido encontrado ****")
         else:
             print("\n")
             for pedido in pedidos:
@@ -239,6 +241,7 @@ def Select(Ref, Pesq):
 
 ##################################################################################################################################################################################################################################################
 
+#Funcao para alterar pedido
 def Update( Table, ref, ID_Pedido):
     if Table == 'Hora':
         cursor, connection = tables.chamada_db('nao')
@@ -248,6 +251,7 @@ def Update( Table, ref, ID_Pedido):
                         (ref, ID_Pedido))
         connection.commit()
         connection.close()
+
     elif Table == 'Total':
         cursor, connection = tables.chamada_db('nao')
         cursor.execute("UPDATE pedido \
@@ -266,9 +270,18 @@ def Update( Table, ref, ID_Pedido):
         connection.commit()
         connection.close()
 
+    elif Table == 'Status':
+        cursor, connection = tables.chamada_db('nao')
+        cursor.execute("UPDATE pedido \
+                                set Status = False \
+                                where id_pedido = ?",
+                       (ID_Pedido,))
+        connection.commit()
+        connection.close()
 
 ##################################################################################################################################################################################################################################################
 
+#Funcao para excluir pedido
 def Delete(Ref):
     cursor, connection = tables.chamada_db('nao')
     cursor.execute("DELETE FROM pedido \
@@ -279,3 +292,5 @@ def Delete(Ref):
     connection.commit()
     connection.close()
     return print('\n          ***** Pedido Excluido *****')
+
+##################################################################################################################################################################################################################################################

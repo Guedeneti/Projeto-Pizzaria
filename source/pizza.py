@@ -15,6 +15,7 @@ Observações.: 2020-05-11 - [R00] Criação do Arquivo - Versao 1.00
 from source.lib import library
 from source.db import db_pizza
 
+#Funcao menu da pizza
 def Menu_Cadastro():
     opcao = 1
     while opcao != 0:
@@ -42,6 +43,7 @@ def Menu_Cadastro():
 
 ###########################################################################################################################################################################################
 
+#Funcao para inserir pizza
 def Insert():
 
     print('\n         ***** Inserindo Pizza *****')
@@ -87,6 +89,7 @@ def Insert():
 
 ###########################################################################################################################################################################################
 
+#Funcao para fazer alteracao na pizza
 def Update():
     update = True
     updatebool = True
@@ -199,6 +202,7 @@ def Update():
 
 ###########################################################################################################################################################################################
 
+#Funcao para mostrar dados da pizza
 def Select():
     Select = True
     print('\n            ***** Buscando Pizza *****')
@@ -238,6 +242,7 @@ def Select():
 
 ###########################################################################################################################################################################################
 
+#Funcao para deletar(desativar) pizza
 def Delete():
     Delete = True
     delete = True

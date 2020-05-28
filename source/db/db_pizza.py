@@ -15,7 +15,7 @@ import os
 from source.db.database import tables
 from source.lib import library
 
-
+#Funcao para inserir pizza
 def Insert(pizza):
     cursor, connection = tables.chamada_db('nao')
     cursor.execute("INSERT INTO pizza(nome, tipo, data_criacao, ingredientes, valor_custo) \
@@ -26,6 +26,7 @@ def Insert(pizza):
 
 ####################################################################################################################################################################################################################################################
 
+#Funcao para alterar pizza
 def Update(pizzaupdate, inativacao):
     cursor, connection = tables.chamada_db('nao')
 
@@ -46,6 +47,7 @@ def Update(pizzaupdate, inativacao):
 
 ####################################################################################################################################################################################################################################################
 
+#Funcao para mostrar dados da pizza
 def Select(PizzaCodigo, bool, select):
     cursor, connection = tables.chamada_db('nao')
     if select == True:
@@ -102,6 +104,7 @@ def Select(PizzaCodigo, bool, select):
 
 ##################################################################################################################################################################################################################################################
 
+#Funcao para deletar(desativar) pizza
 def Delete(data, PizzaCodigo):
     cursor, connection = tables.chamada_db('nao')
     cursor.execute("UPDATE pizza \
@@ -113,6 +116,7 @@ def Delete(data, PizzaCodigo):
 
 ##################################################################################################################################################################################################################################################
 
+#Funcao para excluir todas as pizzas, e depois incluir as padroes
 def create_db_pizza():
     cursor, connection = tables.chamada_db('nao')
 

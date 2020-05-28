@@ -3,7 +3,7 @@ Data.Criacao: 2020-05-10
 Projeto.....: Projeto03
 Descricao...: Arquivo de biblioteca padrão
 Arquivo.....: library.py - Função Principal contendo menu para chamada das demais funções
-Autor.......: Vinicius Guedes
+Autor.......: Vinicius Guedes / Mateus Pompermayer
 Observações.: 2020-05-10 - [R00] Criação do Arquivo - Versao 1.00
               2020-05-10 - [R01] Criação da função Datetime_fmt - Versao 1.00
               2020-05-10 - [R02] Criação da função Limpar_Tela - Versao 1.00
@@ -26,7 +26,7 @@ from source.db import db_pizza
 from source.db import db_pedido
 
 
-# Retorna somente a data e hora atual,
+# Retorna somente a data e hora atual, novo (retorna so hora ou so data)
 def Datetime_fmt(formatstring):
     # no formato YYYY-MM-DD HH: MM:SS
     if formatstring == 'YYYY-MM-DD HH:MM:SS.MS':
@@ -110,7 +110,7 @@ def Menu_Movimentacao():
                     elif ref == 'SAIR':
                         ref= 'BOB-PIZZARIA'
 
-
+#Funcao para calcular valores da pizza, fazendo o calculo a partir do tamanho e quantidade de pizzas
 def Calcular_Valor(Tamanho, Valor, Qtde):
     if Tamanho == 'Media':
         Valor_Parcial = (Valor * 1.15) * Qtde
@@ -152,6 +152,7 @@ def Calcular_Valor(Tamanho, Valor, Qtde):
 
         return Valor_Parcial, Valor_Unit
 
+#Funcao para calcular valores do pedido, fazendo o calculo a partir do pedido, para calcular o total ou o troco do pedido
 def Valores_Pedido(Pedido, id_pedido, Troco):
     if Pedido == 'Total':
         Valores = db_pedido.Select(id_pedido, 'Valor')

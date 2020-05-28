@@ -3,7 +3,7 @@ Data.Criacao: 2020-05-08
 Projeto.....: Projeto_Pizzaria
 Descricao...: Arquivo para criar banco de dados
 Arquivo.....: tables.py - Criação das Tabelas do banco
-Autor.......: Mateus Pompermayer
+Autor.......: Vinicius Guedes
 Observações.: 2020-05-12 - [R00] Criação do Arquivo - Versao 1.00
               2020-05-12 - [R01] Criação do database pizzaria - Versao 1.00
               2020-05-12 - [R02] Criação da tabela pizza - Versao 1.00
@@ -17,7 +17,7 @@ from source.db import db_pizza
 
 def chamada_db(new):
     # definindo um arquivo
-    fileDB = 'C:\\Users\\vinip\\Documents\\Facul\\3SEM\\Saito\\Pyton\\Projeto_Pizzaria\\source\\db\\database\\db_pizzaria.sqlite'
+    fileDB = 'C:\\Users\\mateu\\Documents\\Pycharm\\source\\db\\database\\db_pizzaria.sqlite'
 
     # verificando se arquivo de banco de dados existe
     if not os.path.exists(fileDB) and new != 'new':
