@@ -16,6 +16,7 @@ Observações.: 2020-05-11 - [R00] Criação do Arquivo - Versao 1.00
 from source.db import db_user
 from source.lib import library
 
+#Menu de chamada das Funçoes Principais
 def Menu_Cadastro():
     opcao = 1
     while opcao != 0:
@@ -43,6 +44,7 @@ def Menu_Cadastro():
 
 ############################################################################################################################################################################
 
+#Funcao de inserção de usuario
 def Insert ():
     print('\n          ***** Inserindo Cliente *****')
     print("    ID.............: ", db_user.Achar_Id())
@@ -57,7 +59,7 @@ def Insert ():
                 input('    Cidade.........: '),
                 input('    UF.............: '),
                 library.Datetime_fmt('YYYY-MM-DD'))]
-
+    #Chamada do banco
     ID = db_user.insert(usuario)
     print('\n         ***** Usuario adicionado *****')
 
@@ -65,6 +67,7 @@ def Insert ():
 
 ############################################################################################################################################################################
 
+#Funcao de Atualização de usuario
 def Update ():
     opcao = 1
     while opcao != 0:
@@ -88,21 +91,21 @@ def Update ():
                     if opcao == 1:
                         ref = eval(input('\n     ID Cliente..: '))
                         user = db_user.select(1, ref)
-
+                        # Chamada do banco
                     elif opcao == 2:
                         ref = eval(input('\n     Telefone Fixo..: '))
                         user = db_user.select(2, ref)
-
+                        # Chamada do banco
                     elif opcao == 3:
                         ref = eval(input('\n     Telefone Celular..: '))
                         user = db_user.select(3, ref)
-
+                        # Chamada do banco
                     if user == None or user == []:
                         print("\n     ***** Nenhum Cadastro Encontrado *****")
                     else:
                         print("\n            ***** Dados  Atuais *****\n")
                         Exibir_Select(user, 1)
-
+                        # Chamada do banco
                         opcao = 1
                         while opcao != 2:
                             try:
@@ -127,7 +130,7 @@ def Update ():
                                                 input('    Cidade.........: '),
                                                 input('    UF.............: '),
                                                 user[0])]
-
+                                    # Chamada do banco
                                     db_user.update(usuario)
                                     print('\n          ***** Usuario Alterado *****')
                                     opcao = 2
@@ -137,6 +140,7 @@ def Update ():
 
 ############################################################################################################################################################################
 
+#Funcao de busca de usuario
 def Select ():
     opcao =1
     while opcao != 0:
@@ -154,20 +158,24 @@ def Select ():
         except ValueError as e:
             print("\n           ***** Valor Inválido *****")
         else:
+            # Chamada do banco
             user = db_user.select(4, 'tudo')
             if user == []:
                 print("\n     ***** Nenhum Cadastro Encontrado *****")
             else:
                 if opcao == 1:
                     ref = input('     ID..: ')
+                    # Chamada do banco
                     user = db_user.select(1, ref)
                     Exibir_Select(user,1)
                 elif opcao == 2:
                     ref = input('     Telefone Fixo..: ')
+                    # Chamada do banco
                     user = db_user.select(2, ref)
                     Exibir_Select(user,1)
                 elif opcao == 3:
                     ref = input('     Telefone Celular..: ')
+                    # Chamada do banco
                     user = db_user.select(3, ref)
                     Exibir_Select(user,1)
                 elif opcao == 4:
@@ -175,6 +183,7 @@ def Select ():
                         Exibir_Select(row,1)
                 opcao=0
 
+#Funcao de exibicao de usuario
 def Exibir_Select(user,tipo):
     if tipo == 1:
         if not user == None:
@@ -199,6 +208,7 @@ def Exibir_Select(user,tipo):
 
 ############################################################################################################################################################################
 
+#Funcao de remocao de usuario
 def Delete ():
     opcao = 1
     while opcao != 0:
@@ -221,14 +231,17 @@ def Delete ():
                 if opcao != 0:
                     if opcao == 1:
                         ref = eval(input('\n     ID Cliente..: '))
+                        # Chamada do banco
                         user = db_user.select(1, ref)
 
                     elif opcao == 2:
                         ref = eval(input('\n     Telefone Fixo..: '))
+                        # Chamada do banco
                         user = db_user.select(2, ref)
 
                     elif opcao == 3:
                         ref = eval(input('\n     Telefone Celular..: '))
+                        # Chamada do banco
                         user = db_user.select(3, ref)
 
                     if user == None or user == []:
@@ -249,6 +262,7 @@ def Delete ():
                                 print("\n           ***** Valor Inválido *****")
                             else:
                                 if opcao == 1:
+                                    # Chamada do banco
                                     db_user.delete(user[0])
                                     opcao = 2
                                 elif opcao == 2:

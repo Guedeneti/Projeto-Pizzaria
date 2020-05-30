@@ -13,7 +13,6 @@ Observações.: 2020-05-10 - [R00] Criação do Arquivo - Versao 1.00
 from source.lib import library
 from source.db.database import tables
 
-
 def main():
     #Confirmação do arquivo do banco
     connection = tables.chamada_db('nao')

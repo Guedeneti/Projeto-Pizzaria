@@ -10,6 +10,9 @@ Observações.: 2020-05-10 - [R00] Criação do Arquivo - Versao 1.00
 
 from source.db.database import tables
 
+#######################################################################################################################################################3
+
+#Funcao de inclusao de usuario no banco
 def insert (usuario):
     cursor, connection = tables.chamada_db('nao')
     cursor.executemany("INSERT INTO user(nome, tel_fix, tel_cel, cep, endereco, numero, complemento, bairro, cidade, uf, data_criacao) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", usuario)
@@ -22,6 +25,9 @@ def insert (usuario):
 
     return format(id_cliente[0])
 
+#######################################################################################################################################################3
+
+#Funcao de Busca de usuario no banco
 def select (tipo, ref):
     cursor, connection = tables.chamada_db('nao')
     if 1 <= tipo <=3:
@@ -42,8 +48,9 @@ def select (tipo, ref):
         return aux
     connection.close()
 
+#######################################################################################################################################################3
 
-
+#Funcao de atualização de usuario no banco
 def update(usuario):
     cursor, connection = tables.chamada_db('nao')
 
@@ -52,6 +59,9 @@ def update(usuario):
 
     connection.close()
 
+#######################################################################################################################################################3
+
+#Funcao de remocao de usuario no banco
 def delete(ref):
     cursor, connection = tables.chamada_db('nao')
     cursor.execute("SELECT * from pedido where id_user = ?", (ref,))
@@ -67,6 +77,9 @@ def delete(ref):
 
     connection.close()
 
+#######################################################################################################################################################3
+
+#Funcao de busca de id de usuario no banco
 def Achar_Id():
     cursor, connection = tables.chamada_db('nao')
 

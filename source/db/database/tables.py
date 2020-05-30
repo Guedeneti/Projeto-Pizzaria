@@ -17,7 +17,7 @@ from source.db import db_pizza
 
 def chamada_db(new):
     # definindo um arquivo
-    fileDB = 'C:\\Users\\mateu\\Documents\\Pycharm\\source\\db\\database\\db_pizzaria.sqlite'
+    fileDB = 'C:\\Users\\vinip\\Documents\\Facul\\3SEM\\Saito\\Pyton\\Projeto_Pizzaria\\source\\db\\database\\db_pizzaria.sqlite'
 
     # verificando se arquivo de banco de dados existe
     if not os.path.exists(fileDB) and new != 'new':
